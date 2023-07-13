@@ -16,8 +16,8 @@ namespace MVC_DataBaseConnectivity.Views
 
         public void GetById(RegionModel region)
         {
-            Console.Write("Id: " + region.Id);
-            Console.WriteLine(", Name: " + region.Name);
+            Console.WriteLine("Id: " + region.Id);
+            Console.WriteLine("Name : " + region.Name);
             Console.WriteLine("==========================");
         }
 

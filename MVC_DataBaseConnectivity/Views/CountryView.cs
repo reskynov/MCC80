@@ -19,8 +19,8 @@ namespace MVC_DataBaseConnectivity.Views
 
         public void GetById(CountryModel country)
         {
-            Console.Write("Id: " + country.Id);
-            Console.WriteLine(", Name: " + country.Name);
+            Console.WriteLine("Id: " + country.Id);
+            Console.WriteLine("Name: " + country.Name);
             Console.WriteLine("==========================");
         }
 
