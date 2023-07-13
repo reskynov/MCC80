@@ -38,6 +38,7 @@ namespace MVC_DataBaseConnectivity
                         break;
                     case "2":
                         Console.Clear();
+                        backToMain = DepartmentMenu("department", backToMain);
                         break;
                     case "3":
                         Console.Clear();
@@ -70,6 +71,70 @@ namespace MVC_DataBaseConnectivity
             }
         }
 
+        public static bool DepartmentMenu(string menuName, bool backToMain)
+        {
+            DepartmentModel department = new DepartmentModel();
+            DepartmentView vDepartment = new DepartmentView();
+            DepartmentController departmentController = new DepartmentController(department, vDepartment);
+
+            bool backToSub = true;
+            while (backToSub)
+            {
+                PrintSubMenu(menuName);
+
+                Console.Write("Input Menu : ");
+                try
+                {
+                    string inputSubMenu = Console.ReadLine();
+                    switch (inputSubMenu)
+                    {
+                        case "1":
+                            Console.Clear();
+                            departmentController.GetAll();
+                            PressAnyKey();
+                            break;
+                        case "2":
+                            Console.Clear();
+                            Console.Write("Input ID Department to Search : ");
+                            int id = Convert.ToInt32(Console.ReadLine());
+                            departmentController.GetById(id);
+                            PressAnyKey();
+                            break;
+                        case "3":
+                            Console.Clear();
+                            departmentController.Insert();
+                            PressAnyKey();
+                            break;
+                        case "4":
+                            Console.Clear();
+                            departmentController.Update();
+                            PressAnyKey();
+                            break;
+                        case "5":
+                            Console.Clear();
+                            departmentController.Delete();
+                            PressAnyKey();
+                            break;
+                        case "6":
+                            backToMain = true;
+                            backToSub = false;
+                            Console.Clear();
+                            return backToMain;
+                            break;
+                        default:
+                            Console.WriteLine("INVALID INPUT!!! RETRY AGAIN!!");
+                            backToSub = true;
+                            break;
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine("INVALID INPUT!!! RETRY AGAIN!!");
+                }
+            }
+            return backToMain;
+        }
+
         public static bool JobMenu(string menuName, bool backToMain)
         {
             JobModel job = new JobModel();
@@ -94,7 +159,7 @@ namespace MVC_DataBaseConnectivity
                             break;
                         case "2":
                             Console.Clear();
-                            Console.Write("Input ID Region to Search : ");
+                            Console.Write("Input ID Job to Search : ");
                             string id = Console.ReadLine();
                             jobController.GetById(id);
                             PressAnyKey();
@@ -222,7 +287,7 @@ namespace MVC_DataBaseConnectivity
                             break;
                         case "2":
                             Console.Clear();
-                            Console.Write("Input ID Region to Search : ");
+                            Console.Write("Input ID Country to Search : ");
                             string id = Console.ReadLine();
                             countryController.GetById(id);
                             PressAnyKey();

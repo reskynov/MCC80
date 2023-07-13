@@ -66,8 +66,8 @@ namespace MVC_DataBaseConnectivity.Controllers
 
         public void Update()
         {
-            var region = _countryView.Update();
-            var result = _countryModel.Update(region);
+            var country = _countryView.Update();
+            var result = _countryModel.Update(country);
             switch (result)
             {
                 case 0:
@@ -84,8 +84,8 @@ namespace MVC_DataBaseConnectivity.Controllers
 
         public void Delete()
         {
-            var region = _countryView.Delete();
-            var result = _countryModel.Delete(region);
+            var country = _countryView.Delete();
+            var result = _countryModel.Delete(country);
             switch (result)
             {
                 case 0:

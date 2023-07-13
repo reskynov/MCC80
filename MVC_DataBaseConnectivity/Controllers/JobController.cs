@@ -66,8 +66,8 @@ namespace MVC_DataBaseConnectivity.Controllers
 
         public void Update()
         {
-            var region = _jobView.Update();
-            var result = _jobModel.Update(region);
+            var job = _jobView.Update();
+            var result = _jobModel.Update(job);
             switch (result)
             {
                 case 0:
@@ -84,8 +84,8 @@ namespace MVC_DataBaseConnectivity.Controllers
 
         public void Delete()
         {
-            var region = _jobView.Delete();
-            var result = _jobModel.Delete(region);
+            var job = _jobView.Delete();
+            var result = _jobModel.Delete(job);
             switch (result)
             {
                 case 0:

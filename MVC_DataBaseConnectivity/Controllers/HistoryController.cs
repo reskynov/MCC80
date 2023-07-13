@@ -45,8 +45,8 @@ namespace MVC_DataBaseConnectivity.Controllers
 
         public void Insert()
         {
-            var country = _historyView.Insert();
-            var result = _historyModel.Insert(country);
+            var history = _historyView.Insert();
+            var result = _historyModel.Insert(history);
             switch (result)
             {
                 case 0:
@@ -63,8 +63,8 @@ namespace MVC_DataBaseConnectivity.Controllers
 
         public void Update()
         {
-            var region = _historyView.Update();
-            var result = _historyModel.Update(region);
+            var history = _historyView.Update();
+            var result = _historyModel.Update(history);
             switch (result)
             {
                 case 0:
@@ -81,8 +81,8 @@ namespace MVC_DataBaseConnectivity.Controllers
 
         public void Delete()
         {
-            var region = _historyView.Delete();
-            var result = _historyModel.Delete(region);
+            var history = _historyView.Delete();
+            var result = _historyModel.Delete(history);
             switch (result)
             {
                 case 0:

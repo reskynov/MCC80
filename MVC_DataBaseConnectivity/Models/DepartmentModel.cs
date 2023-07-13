@@ -3,57 +3,58 @@ using System.Data.SqlClient;
 
 namespace MVC_DataBaseConnectivity.Models
 {
-    public class JobModel
+    public class DepartmentModel
     {
-        public string Id { get; set; }
-        public string Title { get; set; }
-        public int? MinSalary { get; set; }
-        public int? MaxSalary { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int LocationId { get; set; }
+        public int? ManagerId { get; set; }
 
         private static SqlConnection _connection = DatabaseConnection.Connection();
 
-        //Get All
-        public List<JobModel> GetAll()
+        public List<DepartmentModel> GetAll()
         {
             try
             {
-                List<JobModel> jobs = new List<JobModel>();
                 _connection.Open();
+
+                List<DepartmentModel> departments = new List<DepartmentModel>();
 
                 SqlCommand cmd = _connection.CreateCommand();
                 cmd.Connection = _connection;
-                cmd.CommandText = "select * from jobs order by cast(id as int) ASC";
+                cmd.CommandText = "select * from departments";
                 using SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    JobModel job = new JobModel();
-                    job.Id = reader.GetString(0);
-                    job.Title = reader.GetString(1);
-                    job.MinSalary = reader.GetInt32(2);
-                    job.MaxSalary = reader.GetInt32(3);
-                    jobs.Add(job);
+                    DepartmentModel department = new DepartmentModel();
+                    department.Id = reader.GetInt32(0);
+                    department.Name = reader.GetString(1);
+                    department.LocationId = reader.GetInt32(2);
+                    department.ManagerId = reader.IsDBNull(3) ? -1 : reader.GetInt32(3);
+                    departments.Add(department);
                 }
                 reader.Close();
                 _connection.Close();
-                return jobs;
+
+                return departments;
             }
             catch
             {
-                return new List<JobModel>();
+                return new List<DepartmentModel>();
             }
         }
 
         //Get By ID
-        public JobModel? GetById(string idJobs)
+        public DepartmentModel? GetById(int idJobs)
         {
             try
             {
-                JobModel job = new JobModel();
                 _connection.Open();
+                DepartmentModel department = new DepartmentModel();
 
                 SqlCommand cmd = _connection.CreateCommand();
                 cmd.Connection = _connection;
-                cmd.CommandText = "select * from jobs where id = @id";
+                cmd.CommandText = "select * from departments where id = @id";
 
                 SqlParameter pId = new SqlParameter();
                 pId.ParameterName = "@id";
@@ -64,15 +65,14 @@ namespace MVC_DataBaseConnectivity.Models
                 using SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    job.Id = reader.GetString(0);
-                    job.Title = reader.GetString(1);
-                    job.MinSalary = reader.IsDBNull(2) ? -1 : reader.GetInt32(2);
-                    job.MaxSalary = reader.IsDBNull(3) ? -1 : reader.GetInt32(3);
+                    department.Id = reader.GetInt32(0);
+                    department.Name = reader.GetString(1);
+                    department.LocationId = reader.GetInt32(2);
+                    department.ManagerId = reader.IsDBNull(3) ? -1 : reader.GetInt32(3);
                 }
                 reader.Close();
                 _connection.Close();
-
-                return job;
+                return department;
             }
             catch
             {
@@ -81,13 +81,13 @@ namespace MVC_DataBaseConnectivity.Models
         }
 
         //Insert
-        public int Insert(JobModel job)
+        public int Insert(DepartmentModel department)
         {
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
-            cmd.CommandText = "insert into jobs (id, title, min_salary, max_salary) " +
-                "values (@id, @title, @min, @max);";
+            cmd.CommandText = "insert into departments (id, name, location_id, manager_id) " +
+                "values (@id, @name, @locationId, @managerId);";
 
             SqlTransaction transaction = _connection.BeginTransaction();
             cmd.Transaction = transaction;
@@ -95,27 +95,27 @@ namespace MVC_DataBaseConnectivity.Models
             {
                 SqlParameter pId = new SqlParameter();
                 pId.ParameterName = "@id";
-                pId.SqlDbType = System.Data.SqlDbType.Char;
-                pId.Value = job.Id;
+                pId.SqlDbType = System.Data.SqlDbType.Int;
+                pId.Value = department.Id;
                 cmd.Parameters.Add(pId);
 
-                SqlParameter pTitle = new SqlParameter();
-                pTitle.ParameterName = "@title";
-                pTitle.SqlDbType = System.Data.SqlDbType.VarChar;
-                pTitle.Value = job.Title;
-                cmd.Parameters.Add(pTitle);
+                SqlParameter pName = new SqlParameter();
+                pName.ParameterName = "@name";
+                pName.SqlDbType = System.Data.SqlDbType.VarChar;
+                pName.Value = department.Name;
+                cmd.Parameters.Add(pName);
 
-                SqlParameter pMin = new SqlParameter();
-                pMin.ParameterName = "@min";
-                pMin.SqlDbType = System.Data.SqlDbType.Int;
-                pMin.Value = job.MinSalary;
-                cmd.Parameters.Add(pMin);
+                SqlParameter pLocId = new SqlParameter();
+                pLocId.ParameterName = "@locationId";
+                pLocId.SqlDbType = System.Data.SqlDbType.Int;
+                pLocId.Value = department.LocationId;
+                cmd.Parameters.Add(pLocId);
 
-                SqlParameter pMax = new SqlParameter();
-                pMax.ParameterName = "@max";
-                pMax.SqlDbType = System.Data.SqlDbType.Int;
-                pMax.Value = job.MaxSalary;
-                cmd.Parameters.Add(pMax);
+                SqlParameter pManId = new SqlParameter();
+                pManId.ParameterName = "@managerId";
+                pManId.SqlDbType = System.Data.SqlDbType.Int;
+                pManId.Value = department.ManagerId;
+                cmd.Parameters.Add(pManId);
 
                 int result = cmd.ExecuteNonQuery();
                 transaction.Commit();
@@ -132,12 +132,12 @@ namespace MVC_DataBaseConnectivity.Models
         }
 
         //Update
-        public int Update(JobModel job)
+        public int Update(DepartmentModel department)
         {
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
-            cmd.CommandText = "update jobs set title = @title, min_salary = @min, max_salary = @max " +
+            cmd.CommandText = "update departments set name = @name, location_id = @locationId, manager_id = @managerId " +
                 "where id = @id;";
 
             SqlTransaction transaction = _connection.BeginTransaction();
@@ -146,27 +146,27 @@ namespace MVC_DataBaseConnectivity.Models
             {
                 SqlParameter pId = new SqlParameter();
                 pId.ParameterName = "@id";
-                pId.SqlDbType = System.Data.SqlDbType.Char;
-                pId.Value = job.Id;
+                pId.SqlDbType = System.Data.SqlDbType.Int;
+                pId.Value = department.Id;
                 cmd.Parameters.Add(pId);
 
-                SqlParameter pTitle = new SqlParameter();
-                pTitle.ParameterName = "@title";
-                pTitle.SqlDbType = System.Data.SqlDbType.VarChar;
-                pTitle.Value = job.Title;
-                cmd.Parameters.Add(pTitle);
+                SqlParameter pName = new SqlParameter();
+                pName.ParameterName = "@name";
+                pName.SqlDbType = System.Data.SqlDbType.VarChar;
+                pName.Value = department.Name;
+                cmd.Parameters.Add(pName);
 
-                SqlParameter pMin = new SqlParameter();
-                pMin.ParameterName = "@min";
-                pMin.SqlDbType = System.Data.SqlDbType.Int;
-                pMin.Value = job.MinSalary;
-                cmd.Parameters.Add(pMin);
+                SqlParameter pLocId = new SqlParameter();
+                pLocId.ParameterName = "@locationId";
+                pLocId.SqlDbType = System.Data.SqlDbType.Int;
+                pLocId.Value = department.LocationId;
+                cmd.Parameters.Add(pLocId);
 
-                SqlParameter pMax = new SqlParameter();
-                pMax.ParameterName = "@max";
-                pMax.SqlDbType = System.Data.SqlDbType.Int;
-                pMax.Value = job.MaxSalary;
-                cmd.Parameters.Add(pMax);
+                SqlParameter pManId = new SqlParameter();
+                pManId.ParameterName = "@managerId";
+                pManId.SqlDbType = System.Data.SqlDbType.Int;
+                pManId.Value = department.ManagerId;
+                cmd.Parameters.Add(pManId);
 
                 int result = cmd.ExecuteNonQuery();
                 transaction.Commit();
@@ -183,12 +183,12 @@ namespace MVC_DataBaseConnectivity.Models
         }
 
         //Delete
-        public int Delete(JobModel job)
+        public int Delete(DepartmentModel department)
         {
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
-            cmd.CommandText = "delete from jobs where id = @id;";
+            cmd.CommandText = "delete from departments where id = @id;";
 
             SqlTransaction transaction = _connection.BeginTransaction();
             cmd.Transaction = transaction;
@@ -197,7 +197,7 @@ namespace MVC_DataBaseConnectivity.Models
                 SqlParameter pId = new SqlParameter();
                 pId.ParameterName = "@id";
                 pId.SqlDbType = System.Data.SqlDbType.Int;
-                pId.Value = job.Id;
+                pId.Value = department.Id;
                 cmd.Parameters.Add(pId);
 
                 int result = cmd.ExecuteNonQuery();
