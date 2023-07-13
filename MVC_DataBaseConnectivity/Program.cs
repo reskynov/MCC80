@@ -50,6 +50,7 @@ namespace MVC_DataBaseConnectivity
                         break;
                     case "5":
                         Console.Clear();
+                        backToMain = LocationMenu("location", backToMain);
                         break;
                     case "6":
                         Console.Clear();
@@ -71,6 +72,9 @@ namespace MVC_DataBaseConnectivity
             }
         }
 
+        //Menu 1
+
+        //Menu 2
         public static bool DepartmentMenu(string menuName, bool backToMain)
         {
             DepartmentModel department = new DepartmentModel();
@@ -135,6 +139,7 @@ namespace MVC_DataBaseConnectivity
             return backToMain;
         }
 
+        //Menu 3
         public static bool JobMenu(string menuName, bool backToMain)
         {
             JobModel job = new JobModel();
@@ -199,6 +204,7 @@ namespace MVC_DataBaseConnectivity
             return backToMain;
         }
 
+        //Menu 4
         public static bool HistoryMenu(string menuName, bool backToMain)
         {
             HistoryModel history = new HistoryModel();
@@ -263,6 +269,72 @@ namespace MVC_DataBaseConnectivity
             return backToMain;
         }
 
+        //Menu 5
+        public static bool LocationMenu(string menuName, bool backToMain)
+        {
+            LocationModel location = new LocationModel();
+            LocationView vLocation = new LocationView();
+            LocationController locationController = new LocationController(location, vLocation);
+
+            bool backToSub = true;
+            while (backToSub)
+            {
+                PrintSubMenu(menuName);
+
+                Console.Write("Input Menu : ");
+                try
+                {
+                    string inputSubMenu = Console.ReadLine();
+                    switch (inputSubMenu)
+                    {
+                        case "1":
+                            Console.Clear();
+                            locationController.GetAll();
+                            PressAnyKey();
+                            break;
+                        case "2":
+                            Console.Clear();
+                            Console.Write("Input ID Country to Search : ");
+                            int id = Convert.ToInt32(Console.ReadLine());
+                            locationController.GetById(id);
+                            PressAnyKey();
+                            break;
+                        case "3":
+                            Console.Clear();
+                            locationController.Insert();
+                            PressAnyKey();
+                            break;
+                        case "4":
+                            Console.Clear();
+                            locationController.Update();
+                            PressAnyKey();
+                            break;
+                        case "5":
+                            Console.Clear();
+                            locationController.Delete();
+                            PressAnyKey();
+                            break;
+                        case "6":
+                            backToMain = true;
+                            backToSub = false;
+                            Console.Clear();
+                            return backToMain;
+                            break;
+                        default:
+                            Console.WriteLine("INVALID INPUT!!! RETRY AGAIN!!");
+                            backToSub = true;
+                            break;
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine("INVALID INPUT!!! RETRY AGAIN!!");
+                }
+            }
+            return backToMain;
+        }
+
+        //Menu 6
         public static bool CountryMenu(string menuName, bool backToMain)
         {
             CountryModel country = new CountryModel();
@@ -327,6 +399,7 @@ namespace MVC_DataBaseConnectivity
             return backToMain;
         }
 
+        //Menu 7
         public static bool RegionMenu(string menuName, bool backToMain)
         {
             RegionModel region = new RegionModel();
@@ -391,6 +464,7 @@ namespace MVC_DataBaseConnectivity
             return backToMain;
         }
 
+        //Print Sub Menu
         public static void PrintSubMenu(string menuName)
         {
             Console.WriteLine("== MENU " + menuName.ToUpper() + " ==");
@@ -402,6 +476,7 @@ namespace MVC_DataBaseConnectivity
             Console.WriteLine("6. Back");
         }
 
+        //Waiting for user Pressed any Key
         public static void PressAnyKey()
         {
             Console.WriteLine("Press Any Key To Continue...");

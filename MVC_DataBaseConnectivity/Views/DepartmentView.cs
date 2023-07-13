@@ -87,12 +87,12 @@ namespace MVC_DataBaseConnectivity.Views
 
         public void DataEmpty()
         {
-            Console.WriteLine("\nDATA REGION IS EMPTY");
+            Console.WriteLine("\nDATA IS EMPTY");
         }
 
         public void DataNotFound()
         {
-            Console.WriteLine("\nDATA REGION NOT FOUND");
+            Console.WriteLine("\nDATA NOT FOUND");
         }
 
         public void ErrorDatabase()

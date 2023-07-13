@@ -10,12 +10,11 @@ namespace MVC_DataBaseConnectivity.Models
         public int LocationId { get; set; }
         public int? ManagerId { get; set; }
 
-        private static SqlConnection _connection = DatabaseConnection.Connection();
-
         public List<DepartmentModel> GetAll()
         {
             try
             {
+                SqlConnection _connection = DatabaseConnection.Connection();
                 _connection.Open();
 
                 List<DepartmentModel> departments = new List<DepartmentModel>();
@@ -45,10 +44,11 @@ namespace MVC_DataBaseConnectivity.Models
         }
 
         //Get By ID
-        public DepartmentModel? GetById(int idJobs)
+        public DepartmentModel? GetById(int id)
         {
             try
             {
+                SqlConnection _connection = DatabaseConnection.Connection();
                 _connection.Open();
                 DepartmentModel department = new DepartmentModel();
 
@@ -59,7 +59,7 @@ namespace MVC_DataBaseConnectivity.Models
                 SqlParameter pId = new SqlParameter();
                 pId.ParameterName = "@id";
                 pId.SqlDbType = System.Data.SqlDbType.Int;
-                pId.Value = idJobs;
+                pId.Value = id;
                 cmd.Parameters.Add(pId);
 
                 using SqlDataReader reader = cmd.ExecuteReader();
@@ -83,6 +83,7 @@ namespace MVC_DataBaseConnectivity.Models
         //Insert
         public int Insert(DepartmentModel department)
         {
+            SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
@@ -134,6 +135,7 @@ namespace MVC_DataBaseConnectivity.Models
         //Update
         public int Update(DepartmentModel department)
         {
+            SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
@@ -185,6 +187,7 @@ namespace MVC_DataBaseConnectivity.Models
         //Delete
         public int Delete(DepartmentModel department)
         {
+            SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;

@@ -5,8 +5,6 @@ namespace MVC_DataBaseConnectivity.Models
 {
     public class RegionModel
     {
-        private static SqlConnection _connection = DatabaseConnection.Connection();
-
         public int Id { get; set; }
         public string? Name { get; set; }
 
@@ -15,6 +13,7 @@ namespace MVC_DataBaseConnectivity.Models
         {
             try
             {
+                SqlConnection _connection = DatabaseConnection.Connection();
                 var regions = new List<RegionModel>();
                 _connection.Open();
 
@@ -44,6 +43,7 @@ namespace MVC_DataBaseConnectivity.Models
         {
             try
             {
+                SqlConnection _connection = DatabaseConnection.Connection();
                 _connection.Open();
                 var region = new RegionModel();
 
@@ -76,6 +76,7 @@ namespace MVC_DataBaseConnectivity.Models
         //Insert Region
         public int Insert(RegionModel region)
         {
+            SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
@@ -109,6 +110,7 @@ namespace MVC_DataBaseConnectivity.Models
         //Update Region
         public int Update(RegionModel region)
         {
+            SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
@@ -147,6 +149,7 @@ namespace MVC_DataBaseConnectivity.Models
         //Delete Region
         public int Delete(RegionModel region)
         {
+            SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;

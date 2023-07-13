@@ -10,13 +10,12 @@ namespace MVC_DataBaseConnectivity.Models
         public int? MinSalary { get; set; }
         public int? MaxSalary { get; set; }
 
-        private static SqlConnection _connection = DatabaseConnection.Connection();
-
         //Get All
         public List<JobModel> GetAll()
         {
             try
             {
+                SqlConnection _connection = DatabaseConnection.Connection();
                 List<JobModel> jobs = new List<JobModel>();
                 _connection.Open();
 
@@ -48,6 +47,7 @@ namespace MVC_DataBaseConnectivity.Models
         {
             try
             {
+                SqlConnection _connection = DatabaseConnection.Connection();
                 JobModel job = new JobModel();
                 _connection.Open();
 
@@ -83,6 +83,7 @@ namespace MVC_DataBaseConnectivity.Models
         //Insert
         public int Insert(JobModel job)
         {
+            SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
@@ -134,6 +135,7 @@ namespace MVC_DataBaseConnectivity.Models
         //Update
         public int Update(JobModel job)
         {
+            SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
@@ -185,6 +187,7 @@ namespace MVC_DataBaseConnectivity.Models
         //Delete
         public int Delete(JobModel job)
         {
+            SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;

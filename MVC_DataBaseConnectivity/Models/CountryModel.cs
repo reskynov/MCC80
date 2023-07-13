@@ -10,12 +10,11 @@ namespace MVC_DataBaseConnectivity.Models
         public string Name { get; set; }
         public int RegionId { get; set; }
 
-        private static SqlConnection _connection = DatabaseConnection.Connection();
-
         public List<CountryModel> GetAll()
         {
             try
             {
+                SqlConnection _connection = DatabaseConnection.Connection();
                 List<CountryModel> countries = new List<CountryModel>();
                 _connection.Open();
 
@@ -45,6 +44,7 @@ namespace MVC_DataBaseConnectivity.Models
         {
             try
             {
+                SqlConnection _connection = DatabaseConnection.Connection();
                 CountryModel country = new CountryModel();
                 _connection.Open();
 
@@ -79,6 +79,7 @@ namespace MVC_DataBaseConnectivity.Models
         //Insert
         public int Insert(CountryModel country)
         {
+            SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
@@ -123,6 +124,7 @@ namespace MVC_DataBaseConnectivity.Models
         //Update
         public int Update(CountryModel country)
         {
+            SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
@@ -167,6 +169,7 @@ namespace MVC_DataBaseConnectivity.Models
         //Delete
         public int Delete(CountryModel country)
         {
+            SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;

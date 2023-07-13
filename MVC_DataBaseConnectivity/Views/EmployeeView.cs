@@ -1,28 +1,44 @@
 ﻿using MVC_DataBaseConnectivity.Models;
 using System;
-using System.Data.SqlClient;
-using System.IO;
+using System.Reflection.PortableExecutable;
 
 namespace MVC_DataBaseConnectivity.Views
 {
-    public class LocationView
+    public class EmployeeView
     {
-        public void GetAll(List<LocationModel> locations)
+        public void GetAll(List<EmployeeModel> employees)
         {
-            foreach (var location in locations)
+            foreach (var employee in employees)
             {
-                GetById(location);
+                GetById(employee);
             }
         }
 
-        public void GetById(LocationModel location)
+        public void GetById(EmployeeModel employee)
         {
-            Console.WriteLine("Id: " + location.Id);
-            Console.WriteLine("Street Address : " + (location.Street == "" ? "EMPTY" : location.Street));
-            Console.WriteLine("Postal Code : " + (location.Postal == "" ? "EMPTY" : location.Postal));
-            Console.WriteLine("City : " + location.City);
-            Console.WriteLine("State Province : " + (location.State == "" ? "EMPTY" : location.State));
-            Console.WriteLine("Country ID : " + (location.CountryId == "" ? "EMPTY" : location.CountryId));
+            Console.Write("ID : " + employee.Id);
+            Console.Write("Full Name : " + employee.Fname + " "+ employee.Lname);
+            Console.Write("Email : " + employee.Email);
+            Console.Write("Phone Number : " + employee.Phone);
+            Console.Write("Hire Date : " + employee.HireDate);
+            Console.Write("Salary : " + employee.Salary);
+            Console.Write("Commission : " + employee.Comission);
+
+            int managerId = reader.IsDBNull(8) ? 0 : reader.GetInt32(8);
+            string managerIdString = "";
+            if (managerId == 0)
+            {
+                managerIdString = "EMPTY";
+            }
+            else
+            {
+                managerIdString = managerId.ToString();
+            }
+            Console.WriteLine(", Manager ID : " + managerIdString);
+
+            Console.Write("Job ID : " + reader.GetString(9));
+            Console.WriteLine("Department ID : " + reader.GetInt32(10));
+            Console.WriteLine();
             Console.WriteLine("==========================");
         }
 

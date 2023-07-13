@@ -6,7 +6,6 @@ namespace MVC_DataBaseConnectivity.Models
 {
     public class HistoryModel
     {
-        private static SqlConnection _connection = DatabaseConnection.Connection();
 
         public DateTime StartDate { get; set; }
         public int EmployeeId { get; set; }
@@ -19,6 +18,7 @@ namespace MVC_DataBaseConnectivity.Models
         {
             try
             {
+                SqlConnection _connection = DatabaseConnection.Connection();
                 List<HistoryModel> histories = new List<HistoryModel>();
                 _connection.Open();
 
@@ -52,6 +52,7 @@ namespace MVC_DataBaseConnectivity.Models
         {
             try
             {
+                SqlConnection _connection = DatabaseConnection.Connection();
                 _connection.Open();
                 List<HistoryModel> histories = new List<HistoryModel>();
 
@@ -90,6 +91,7 @@ namespace MVC_DataBaseConnectivity.Models
         //Insert
         public int Insert(HistoryModel history)
         {
+            SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
@@ -150,6 +152,7 @@ namespace MVC_DataBaseConnectivity.Models
         //Update
         public int Update(HistoryModel history)
         {
+            SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
@@ -210,6 +213,7 @@ namespace MVC_DataBaseConnectivity.Models
         //Delete
         public int Delete(HistoryModel history)
         {
+            SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
