@@ -99,7 +99,5 @@ namespace MVC_DataBaseConnectivity.Controllers
                     break;
             }
         }
-    }
-            
-        
+    }    
 }

@@ -43,7 +43,7 @@ namespace MVC_DataBaseConnectivity.Models
         }
 
         //Get By ID
-        public JobModel? GetById(string idJobs)
+        public JobModel? GetById(string id)
         {
             try
             {
@@ -58,7 +58,7 @@ namespace MVC_DataBaseConnectivity.Models
                 SqlParameter pId = new SqlParameter();
                 pId.ParameterName = "@id";
                 pId.SqlDbType = System.Data.SqlDbType.Int;
-                pId.Value = idJobs;
+                pId.Value = id;
                 cmd.Parameters.Add(pId);
 
                 using SqlDataReader reader = cmd.ExecuteReader();

@@ -33,36 +33,46 @@ namespace MVC_DataBaseConnectivity
                 string inputMainMenu = Console.ReadLine();
                 switch (inputMainMenu)
                 {
+                    //employee
                     case "1":
                         Console.Clear();
+                        backToMain = EmployeeMenu("employees", backToMain);
                         break;
+                    //department
                     case "2":
                         Console.Clear();
-                        backToMain = DepartmentMenu("department", backToMain);
+                        backToMain = DepartmentMenu("departments", backToMain);
                         break;
+                    //job
                     case "3":
                         Console.Clear();
                         backToMain = JobMenu("jobs", backToMain);
                         break;
+                    //history
                     case "4":
                         Console.Clear();
-                        backToMain = HistoryMenu("history", backToMain);
+                        backToMain = HistoryMenu("histories", backToMain);
                         break;
+                    //location
                     case "5":
                         Console.Clear();
-                        backToMain = LocationMenu("location", backToMain);
+                        backToMain = LocationMenu("locations", backToMain);
                         break;
+                    //country
                     case "6":
                         Console.Clear();
                         backToMain = CountryMenu("countries", backToMain);
                         break;
+                    //region
                     case "7":
                         Console.Clear();
                         backToMain = RegionMenu("regions", backToMain);
                         break;
+                    //exit
                     case "8":
                         System.Environment.Exit(1);
                         break;
+                    //different input
                     default:
                         Console.WriteLine("\nINVALID INPUT!!! TRY AGAIN!!");
                         PressAnyKey();
@@ -73,6 +83,69 @@ namespace MVC_DataBaseConnectivity
         }
 
         //Menu 1
+        public static bool EmployeeMenu(string menuName, bool backToMain)
+        {
+            EmployeeModel employee = new EmployeeModel();
+            EmployeeView vEmployee = new EmployeeView();
+            EmployeeController employeeController = new EmployeeController(employee, vEmployee);
+
+            bool backToSub = true;
+            while (backToSub)
+            {
+                PrintSubMenu(menuName);
+
+                Console.Write("Input Menu : ");
+                try
+                {
+                    string inputSubMenu = Console.ReadLine();
+                    switch (inputSubMenu)
+                    {
+                        case "1":
+                            Console.Clear();
+                            employeeController.GetAll();
+                            PressAnyKey();
+                            break;
+                        case "2":
+                            Console.Clear();
+                            Console.Write("Input ID Department to Search : ");
+                            int id = Convert.ToInt32(Console.ReadLine());
+                            employeeController.GetById(id);
+                            PressAnyKey();
+                            break;
+                        case "3":
+                            Console.Clear();
+                            employeeController.Insert();
+                            PressAnyKey();
+                            break;
+                        case "4":
+                            Console.Clear();
+                            employeeController.Update();
+                            PressAnyKey();
+                            break;
+                        case "5":
+                            Console.Clear();
+                            employeeController.Delete();
+                            PressAnyKey();
+                            break;
+                        case "6":
+                            backToMain = true;
+                            backToSub = false;
+                            Console.Clear();
+                            return backToMain;
+                            break;
+                        default:
+                            Console.WriteLine("\nINVALID INPUT!!! RETRY AGAIN!!");
+                            backToSub = true;
+                            break;
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine("\nINVALID INPUT!!! RETRY AGAIN!!");
+                }
+            }
+            return backToMain;
+        }
 
         //Menu 2
         public static bool DepartmentMenu(string menuName, bool backToMain)
@@ -126,14 +199,14 @@ namespace MVC_DataBaseConnectivity
                             return backToMain;
                             break;
                         default:
-                            Console.WriteLine("INVALID INPUT!!! RETRY AGAIN!!");
+                            Console.WriteLine("\nINVALID INPUT!!! RETRY AGAIN!!");
                             backToSub = true;
                             break;
                     }
                 }
                 catch
                 {
-                    Console.WriteLine("INVALID INPUT!!! RETRY AGAIN!!");
+                    Console.WriteLine("\nINVALID INPUT!!! RETRY AGAIN!!");
                 }
             }
             return backToMain;
@@ -191,14 +264,14 @@ namespace MVC_DataBaseConnectivity
                             return backToMain;
                             break;
                         default:
-                            Console.WriteLine("INVALID INPUT!!! RETRY AGAIN!!");
+                            Console.WriteLine("\nINVALID INPUT!!! RETRY AGAIN!!");
                             backToSub = true;
                             break;
                     }
                 }
                 catch
                 {
-                    Console.WriteLine("INVALID INPUT!!! RETRY AGAIN!!");
+                    Console.WriteLine("\nINVALID INPUT!!! RETRY AGAIN!!");
                 }
             }
             return backToMain;
@@ -256,14 +329,14 @@ namespace MVC_DataBaseConnectivity
                             return backToMain;
                             break;
                         default:
-                            Console.WriteLine("INVALID INPUT!!! RETRY AGAIN!!");
+                            Console.WriteLine("\nINVALID INPUT!!! RETRY AGAIN!!");
                             backToSub = true;
                             break;
                     }
                 }
                 catch
                 {
-                    Console.WriteLine("INVALID INPUT!!! RETRY AGAIN!!");
+                    Console.WriteLine("\nINVALID INPUT!!! RETRY AGAIN!!");
                 }
             }
             return backToMain;
@@ -321,14 +394,14 @@ namespace MVC_DataBaseConnectivity
                             return backToMain;
                             break;
                         default:
-                            Console.WriteLine("INVALID INPUT!!! RETRY AGAIN!!");
+                            Console.WriteLine("\nINVALID INPUT!!! RETRY AGAIN!!");
                             backToSub = true;
                             break;
                     }
                 }
                 catch
                 {
-                    Console.WriteLine("INVALID INPUT!!! RETRY AGAIN!!");
+                    Console.WriteLine("\nINVALID INPUT!!! RETRY AGAIN!!");
                 }
             }
             return backToMain;
@@ -386,14 +459,14 @@ namespace MVC_DataBaseConnectivity
                             return backToMain;
                             break;
                         default:
-                            Console.WriteLine("INVALID INPUT!!! RETRY AGAIN!!");
+                            Console.WriteLine("\nINVALID INPUT!!! RETRY AGAIN!!");
                             backToSub = true;
                             break;
                     }
                 }
                 catch
                 {
-                    Console.WriteLine("INVALID INPUT!!! RETRY AGAIN!!");
+                    Console.WriteLine("\nINVALID INPUT!!! RETRY AGAIN!!");
                 }
             }
             return backToMain;
@@ -451,14 +524,14 @@ namespace MVC_DataBaseConnectivity
                             return backToMain;
                             break;
                         default:
-                            Console.WriteLine("INVALID INPUT!!! RETRY AGAIN!!");
+                            Console.WriteLine("\nINVALID INPUT!!! RETRY AGAIN!!");
                             backToSub = true;
                             break;
                     }
                 }
                 catch
                 {
-                    Console.WriteLine("INVALID INPUT!!! RETRY AGAIN!!");
+                    Console.WriteLine("\nINVALID INPUT!!! RETRY AGAIN!!");
                 }
             }
             return backToMain;

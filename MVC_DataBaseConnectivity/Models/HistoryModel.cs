@@ -48,7 +48,7 @@ namespace MVC_DataBaseConnectivity.Models
         }
 
         //Get By ID
-        public List<HistoryModel> GetById(int idEmployee)
+        public List<HistoryModel> GetById(int id)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace MVC_DataBaseConnectivity.Models
                 SqlParameter pId = new SqlParameter();
                 pId.ParameterName = "@id";
                 pId.SqlDbType = System.Data.SqlDbType.Int;
-                pId.Value = idEmployee;
+                pId.Value = id;
                 cmd.Parameters.Add(pId);
 
                 using SqlDataReader reader = cmd.ExecuteReader();
