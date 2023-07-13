@@ -45,6 +45,7 @@ namespace MVC_DataBaseConnectivity
                         break;
                     case "4":
                         Console.Clear();
+                        backToMain = HistoryMenu("history", backToMain);
                         break;
                     case "5":
                         Console.Clear();
@@ -111,6 +112,70 @@ namespace MVC_DataBaseConnectivity
                         case "5":
                             Console.Clear();
                             jobController.Delete();
+                            PressAnyKey();
+                            break;
+                        case "6":
+                            backToMain = true;
+                            backToSub = false;
+                            Console.Clear();
+                            return backToMain;
+                            break;
+                        default:
+                            Console.WriteLine("INVALID INPUT!!! RETRY AGAIN!!");
+                            backToSub = true;
+                            break;
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine("INVALID INPUT!!! RETRY AGAIN!!");
+                }
+            }
+            return backToMain;
+        }
+
+        public static bool HistoryMenu(string menuName, bool backToMain)
+        {
+            HistoryModel history = new HistoryModel();
+            HistoryView vHistory = new HistoryView();
+            HistoryController historyController = new HistoryController(history, vHistory);
+
+            bool backToSub = true;
+            while (backToSub)
+            {
+                PrintSubMenu(menuName);
+
+                Console.Write("Input Menu : ");
+                try
+                {
+                    string inputSubMenu = Console.ReadLine();
+                    switch (inputSubMenu)
+                    {
+                        case "1":
+                            Console.Clear();
+                            historyController.GetAll();
+                            PressAnyKey();
+                            break;
+                        case "2":
+                            Console.Clear();
+                            Console.Write("Input ID Employee to Search History : ");
+                            int id = Convert.ToInt32(Console.ReadLine());
+                            historyController.GetById(id);
+                            PressAnyKey();
+                            break;
+                        case "3":
+                            Console.Clear();
+                            historyController.Insert();
+                            PressAnyKey();
+                            break;
+                        case "4":
+                            Console.Clear();
+                            historyController.Update();
+                            PressAnyKey();
+                            break;
+                        case "5":
+                            Console.Clear();
+                            historyController.Delete();
                             PressAnyKey();
                             break;
                         case "6":
