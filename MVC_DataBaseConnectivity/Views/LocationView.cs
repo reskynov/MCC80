@@ -1,13 +1,14 @@
 ﻿using MVC_DataBaseConnectivity.Models;
 using System;
 using System.Data.SqlClient;
+using System.Diagnostics.Metrics;
 using System.IO;
 
 namespace MVC_DataBaseConnectivity.Views
 {
     public class LocationView
     {
-        public void GetAll(List<LocationModel> locations)
+        public void GetAll(List<Location> locations)
         {
             foreach (var location in locations)
             {
@@ -15,18 +16,25 @@ namespace MVC_DataBaseConnectivity.Views
             }
         }
 
-        public void GetById(LocationModel location)
+        public void GetById(Location location)
         {
-            Console.WriteLine("Id: " + location.Id);
-            Console.WriteLine("Street Address : " + (location.Street == "" ? "EMPTY" : location.Street));
-            Console.WriteLine("Postal Code : " + (location.Postal == "" ? "EMPTY" : location.Postal));
-            Console.WriteLine("City : " + location.City);
-            Console.WriteLine("State Province : " + (location.State == "" ? "EMPTY" : location.State));
-            Console.WriteLine("Country ID : " + (location.CountryId == "" ? "EMPTY" : location.CountryId));
-            Console.WriteLine("==========================");
+            if (location.Id is 0)
+            {
+                DataNotFound();
+            }
+            else
+            {
+                Console.WriteLine("Id: " + location.Id);
+                Console.WriteLine("Street Address : " + (location.Street == "" ? "EMPTY" : location.Street));
+                Console.WriteLine("Postal Code : " + (location.Postal == "" ? "EMPTY" : location.Postal));
+                Console.WriteLine("City : " + location.City);
+                Console.WriteLine("State Province : " + (location.State == "" ? "EMPTY" : location.State));
+                Console.WriteLine("Country ID : " + (location.CountryId == "" ? "EMPTY" : location.CountryId));
+                Console.WriteLine("==========================");
+            }
         }
 
-        public LocationModel Insert()
+        public Location Insert()
         {
             Console.Write("Input Location ID : ");
             int id = Convert.ToInt32(Console.ReadLine());
@@ -40,7 +48,7 @@ namespace MVC_DataBaseConnectivity.Views
             string state = Console.ReadLine();
             Console.Write("Input Location Country ID : ");
             string countryId = Console.ReadLine();
-            return new LocationModel
+            return new Location
             {
                 Id = id,
                 Street = street,
@@ -51,7 +59,7 @@ namespace MVC_DataBaseConnectivity.Views
             };
         }
 
-        public LocationModel Update()
+        public Location Update()
         {
             Console.Write("Input Location ID to Update : ");
             int id = Convert.ToInt32(Console.ReadLine());
@@ -65,7 +73,7 @@ namespace MVC_DataBaseConnectivity.Views
             string state = Console.ReadLine();
             Console.Write("Input Updated Location Country ID : ");
             string countryId = Console.ReadLine();
-            return new LocationModel
+            return new Location
             {
                 Id = id,
                 Street = street,
@@ -76,11 +84,11 @@ namespace MVC_DataBaseConnectivity.Views
             };
         }
 
-        public LocationModel Delete()
+        public Location Delete()
         {
             Console.Write("Input Location ID To Delete : ");
             int id = Convert.ToInt32(Console.ReadLine());
-            return new LocationModel
+            return new Location
             {
                 Id = id,
                 Street = "",

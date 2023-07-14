@@ -85,7 +85,7 @@ namespace MVC_DataBaseConnectivity
         //Menu 1
         public static bool EmployeeMenu(string menuName, bool backToMain)
         {
-            EmployeeModel employee = new EmployeeModel();
+            Employee employee = new Employee();
             EmployeeView vEmployee = new EmployeeView();
             EmployeeController employeeController = new EmployeeController(employee, vEmployee);
 
@@ -150,7 +150,7 @@ namespace MVC_DataBaseConnectivity
         //Menu 2
         public static bool DepartmentMenu(string menuName, bool backToMain)
         {
-            DepartmentModel department = new DepartmentModel();
+            Department department = new Department();
             DepartmentView vDepartment = new DepartmentView();
             DepartmentController departmentController = new DepartmentController(department, vDepartment);
 
@@ -215,7 +215,7 @@ namespace MVC_DataBaseConnectivity
         //Menu 3
         public static bool JobMenu(string menuName, bool backToMain)
         {
-            JobModel job = new JobModel();
+            Job job = new Job();
             JobView vJob = new JobView();
             JobController jobController = new JobController(job, vJob);
 
@@ -280,7 +280,7 @@ namespace MVC_DataBaseConnectivity
         //Menu 4
         public static bool HistoryMenu(string menuName, bool backToMain)
         {
-            HistoryModel history = new HistoryModel();
+            History history = new History();
             HistoryView vHistory = new HistoryView();
             HistoryController historyController = new HistoryController(history, vHistory);
 
@@ -345,7 +345,7 @@ namespace MVC_DataBaseConnectivity
         //Menu 5
         public static bool LocationMenu(string menuName, bool backToMain)
         {
-            LocationModel location = new LocationModel();
+            Location location = new Location();
             LocationView vLocation = new LocationView();
             LocationController locationController = new LocationController(location, vLocation);
 
@@ -410,7 +410,7 @@ namespace MVC_DataBaseConnectivity
         //Menu 6
         public static bool CountryMenu(string menuName, bool backToMain)
         {
-            CountryModel country = new CountryModel();
+            Country country = new Country();
             CountryView vCountry = new CountryView();
             CountryController countryController = new CountryController(country, vCountry);
 
@@ -475,7 +475,7 @@ namespace MVC_DataBaseConnectivity
         //Menu 7
         public static bool RegionMenu(string menuName, bool backToMain)
         {
-            RegionModel region = new RegionModel();
+            Region region = new Region();
             RegionView vRegion = new RegionView();  
             RegionController regionController = new RegionController(region, vRegion);
 

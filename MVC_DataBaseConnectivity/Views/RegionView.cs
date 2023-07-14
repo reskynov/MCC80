@@ -1,12 +1,13 @@
 ﻿using MVC_DataBaseConnectivity.Models;
 using System;
 using System.Data.SqlClient;
+using System.Diagnostics.Metrics;
 
 namespace MVC_DataBaseConnectivity.Views
 {
     public class RegionView
     {
-        public void GetAll(List<RegionModel> regions)
+        public void GetAll(List<Region> regions)
         {
             foreach (var region in regions)
             {
@@ -14,42 +15,49 @@ namespace MVC_DataBaseConnectivity.Views
             }
         }
 
-        public void GetById(RegionModel region)
+        public void GetById(Region region)
         {
-            Console.WriteLine("Id: " + region.Id);
-            Console.WriteLine("Name : " + region.Name);
-            Console.WriteLine("==========================");
+            if (region.Id is 0)
+            {
+                DataNotFound();
+            }
+            else
+            {
+                Console.WriteLine("Id: " + region.Id);
+                Console.WriteLine("Name : " + region.Name);
+                Console.WriteLine("==========================");
+            }
         }
 
-        public RegionModel Insert()
+        public Region Insert()
         {
             Console.Write("Input Region Name : ");
             string name = Console.ReadLine();
-            return new RegionModel
+            return new Region
             {
                 Id = 0,
                 Name = name,
             };
         }
 
-        public RegionModel Update()
+        public Region Update()
         {
             Console.Write("Input Region ID To Update : ");
             int id = Convert.ToInt32(Console.ReadLine());
             Console.Write("\nInput Region Updated Name : ");
             string name = Console.ReadLine();
-            return new RegionModel
+            return new Region
             {
                 Id = id,
                 Name = name,
             };
         }
 
-        public RegionModel Delete()
+        public Region Delete()
         {
             Console.Write("Input Region ID To Delete : ");
             int id = Convert.ToInt32(Console.ReadLine());
-            return new RegionModel
+            return new Region
             {
                 Id = id,
                 Name = "",

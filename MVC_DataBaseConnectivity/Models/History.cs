@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace MVC_DataBaseConnectivity.Models
 {
-    public class HistoryModel
+    public class History
     {
 
         public DateTime StartDate { get; set; }
@@ -14,12 +14,12 @@ namespace MVC_DataBaseConnectivity.Models
         public string JobId { get; set; }
 
         //Get All
-        public List<HistoryModel> GetAll()
+        public List<History> GetAll()
         {
             try
             {
                 SqlConnection _connection = DatabaseConnection.Connection();
-                List<HistoryModel> histories = new List<HistoryModel>();
+                List<History> histories = new List<History>();
                 _connection.Open();
 
                 SqlCommand cmd = _connection.CreateCommand();
@@ -28,7 +28,7 @@ namespace MVC_DataBaseConnectivity.Models
                 using SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    HistoryModel history = new HistoryModel();
+                    History history = new History();
                     history.StartDate = reader.GetDateTime(0);
                     history.EmployeeId = reader.GetInt32(1);
                     history.EndDate = reader.IsDBNull(2) ? null : reader.GetDateTime(2);
@@ -43,18 +43,18 @@ namespace MVC_DataBaseConnectivity.Models
             }
             catch
             {
-                return new List<HistoryModel>();
+                return new List<History>();
             }
         }
 
         //Get By ID
-        public List<HistoryModel> GetById(int id)
+        public List<History> GetById(int id)
         {
             try
             {
                 SqlConnection _connection = DatabaseConnection.Connection();
                 _connection.Open();
-                List<HistoryModel> histories = new List<HistoryModel>();
+                List<History> histories = new List<History>();
 
                 SqlCommand cmd = _connection.CreateCommand();
                 cmd.Connection = _connection;
@@ -69,7 +69,7 @@ namespace MVC_DataBaseConnectivity.Models
                 using SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    HistoryModel history = new HistoryModel();
+                    History history = new History();
                     history.StartDate = reader.GetDateTime(0);
                     history.EmployeeId = reader.GetInt32(1);
                     history.EndDate = reader.IsDBNull(2) ? null : reader.GetDateTime(2);
@@ -84,12 +84,12 @@ namespace MVC_DataBaseConnectivity.Models
             }
             catch
             {
-                return new List<HistoryModel>();
+                return new List<History>();
             }
         }
 
         //Insert
-        public int Insert(HistoryModel history)
+        public int Insert(History history)
         {
             SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
@@ -150,7 +150,7 @@ namespace MVC_DataBaseConnectivity.Models
         }
 
         //Update
-        public int Update(HistoryModel history)
+        public int Update(History history)
         {
             SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
@@ -211,7 +211,7 @@ namespace MVC_DataBaseConnectivity.Models
         }
 
         //Delete
-        public int Delete(HistoryModel history)
+        public int Delete(History history)
         {
             SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();

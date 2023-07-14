@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 
 namespace MVC_DataBaseConnectivity.Models
 {
-    public class EmployeeModel
+    public class Employee
     {
         public int Id { get; set; }
         public string Fname { get; set; }
@@ -18,11 +18,11 @@ namespace MVC_DataBaseConnectivity.Models
         public int DepartmentId { get; set; }
 
         //Get All
-        public List<EmployeeModel> GetAll()
+        public List<Employee> GetAll()
         {
             try
             {
-                List<EmployeeModel> employees = new List<EmployeeModel>();
+                List<Employee> employees = new List<Employee>();
                 SqlConnection _connection = DatabaseConnection.Connection();
                 _connection.Open();
 
@@ -32,7 +32,7 @@ namespace MVC_DataBaseConnectivity.Models
                 using SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    EmployeeModel employee = new EmployeeModel();
+                    Employee employee = new Employee();
                     employee.Id = reader.GetInt32(0);
                     employee.Fname = reader.GetString(1);
                     employee.Lname = reader.IsDBNull(2) ? "" : reader.GetString(2);
@@ -53,17 +53,17 @@ namespace MVC_DataBaseConnectivity.Models
             }
             catch
             {
-                return new List<EmployeeModel>();
+                return new List<Employee>();
             }
         }
 
 
         //Get By ID
-        public EmployeeModel? GetById(int id)
+        public Employee? GetById(int id)
         {
             try
             {
-                EmployeeModel employee = new EmployeeModel();
+                Employee employee = new Employee();
                 SqlConnection _connection = DatabaseConnection.Connection();
                 _connection.Open();
 
@@ -104,7 +104,7 @@ namespace MVC_DataBaseConnectivity.Models
         }
 
         //Insert
-        public int Insert(EmployeeModel employee)
+        public int Insert(Employee employee)
         {
             SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
@@ -198,7 +198,7 @@ namespace MVC_DataBaseConnectivity.Models
         }
 
         //Update
-        public int Update(EmployeeModel employee)
+        public int Update(Employee employee)
         {
             SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
@@ -292,7 +292,7 @@ namespace MVC_DataBaseConnectivity.Models
         }
 
         //Delete
-        public int Delete(EmployeeModel employee)
+        public int Delete(Employee employee)
         {
             SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();

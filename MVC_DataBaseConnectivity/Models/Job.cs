@@ -3,53 +3,57 @@ using System.Data.SqlClient;
 
 namespace MVC_DataBaseConnectivity.Models
 {
-    public class RegionModel
+    public class Job
     {
-        public int Id { get; set; }
-        public string? Name { get; set; }
+        public string Id { get; set; }
+        public string Title { get; set; }
+        public int? MinSalary { get; set; }
+        public int? MaxSalary { get; set; }
 
         //Get All
-        public List<RegionModel> GetAll()
+        public List<Job> GetAll()
         {
             try
             {
                 SqlConnection _connection = DatabaseConnection.Connection();
-                var regions = new List<RegionModel>();
+                List<Job> jobs = new List<Job>();
                 _connection.Open();
 
                 SqlCommand cmd = _connection.CreateCommand();
                 cmd.Connection = _connection;
-                cmd.CommandText = "select * from regions";
+                cmd.CommandText = "select * from jobs order by cast(id as int) ASC";
                 using SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    RegionModel region = new RegionModel();
-                    region.Id = reader.GetInt32(0);
-                    region.Name = reader.GetString(1);
-                    regions.Add(region);
+                    Job job = new Job();
+                    job.Id = reader.GetString(0);
+                    job.Title = reader.GetString(1);
+                    job.MinSalary = reader.GetInt32(2);
+                    job.MaxSalary = reader.GetInt32(3);
+                    jobs.Add(job);
                 }
                 reader.Close();
                 _connection.Close();
-                return regions;
+                return jobs;
             }
             catch
             {
-                return new List<RegionModel>();
+                return new List<Job>();
             }
         }
 
-        //Get By ID Region
-        public RegionModel? GetById(int id)
+        //Get By ID
+        public Job? GetById(string id)
         {
             try
             {
                 SqlConnection _connection = DatabaseConnection.Connection();
+                Job job = new Job();
                 _connection.Open();
-                var region = new RegionModel();
 
                 SqlCommand cmd = _connection.CreateCommand();
                 cmd.Connection = _connection;
-                cmd.CommandText = "select * from regions where id = @id";
+                cmd.CommandText = "select * from jobs where id = @id";
 
                 SqlParameter pId = new SqlParameter();
                 pId.ParameterName = "@id";
@@ -60,12 +64,15 @@ namespace MVC_DataBaseConnectivity.Models
                 using SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    region.Id = reader.GetInt32(0);
-                    region.Name = reader.GetString(1);
+                    job.Id = reader.GetString(0);
+                    job.Title = reader.GetString(1);
+                    job.MinSalary = reader.IsDBNull(2) ? -1 : reader.GetInt32(2);
+                    job.MaxSalary = reader.IsDBNull(3) ? -1 : reader.GetInt32(3);
                 }
                 reader.Close();
                 _connection.Close();
-                return region;
+
+                return job;
             }
             catch
             {
@@ -73,30 +80,48 @@ namespace MVC_DataBaseConnectivity.Models
             }
         }
 
-        //Insert Region
-        public int Insert(RegionModel region)
+        //Insert
+        public int Insert(Job job)
         {
             SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
-            cmd.CommandText = "insert into regions (name) values (@name);";
+            cmd.CommandText = "insert into jobs (id, title, min_salary, max_salary) " +
+                "values (@id, @title, @min, @max);";
 
             SqlTransaction transaction = _connection.BeginTransaction();
             cmd.Transaction = transaction;
             try
             {
-                SqlParameter pName = new SqlParameter();
-                pName.ParameterName = "@name";
-                pName.SqlDbType = System.Data.SqlDbType.VarChar;
-                pName.Value = region.Name;
-                cmd.Parameters.Add(pName);
+                SqlParameter pId = new SqlParameter();
+                pId.ParameterName = "@id";
+                pId.SqlDbType = System.Data.SqlDbType.Char;
+                pId.Value = job.Id;
+                cmd.Parameters.Add(pId);
+
+                SqlParameter pTitle = new SqlParameter();
+                pTitle.ParameterName = "@title";
+                pTitle.SqlDbType = System.Data.SqlDbType.VarChar;
+                pTitle.Value = job.Title;
+                cmd.Parameters.Add(pTitle);
+
+                SqlParameter pMin = new SqlParameter();
+                pMin.ParameterName = "@min";
+                pMin.SqlDbType = System.Data.SqlDbType.Int;
+                pMin.Value = job.MinSalary;
+                cmd.Parameters.Add(pMin);
+
+                SqlParameter pMax = new SqlParameter();
+                pMax.ParameterName = "@max";
+                pMax.SqlDbType = System.Data.SqlDbType.Int;
+                pMax.Value = job.MaxSalary;
+                cmd.Parameters.Add(pMax);
 
                 int result = cmd.ExecuteNonQuery();
-
                 transaction.Commit();
                 _connection.Close();
-                
+
                 return result;
             }
             catch
@@ -107,30 +132,43 @@ namespace MVC_DataBaseConnectivity.Models
             }
         }
 
-        //Update Region
-        public int Update(RegionModel region)
+        //Update
+        public int Update(Job job)
         {
             SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
-            cmd.CommandText = "update regions set name = @name where id = @id;";
+            cmd.CommandText = "update jobs set title = @title, min_salary = @min, max_salary = @max " +
+                "where id = @id;";
 
             SqlTransaction transaction = _connection.BeginTransaction();
             cmd.Transaction = transaction;
             try
             {
-                SqlParameter pName = new SqlParameter();
-                pName.ParameterName = "@name";
-                pName.SqlDbType = System.Data.SqlDbType.VarChar;
-                pName.Value = region.Name;
-                cmd.Parameters.Add(pName);
-
                 SqlParameter pId = new SqlParameter();
                 pId.ParameterName = "@id";
-                pId.SqlDbType = System.Data.SqlDbType.Int;
-                pId.Value = region.Id;
+                pId.SqlDbType = System.Data.SqlDbType.Char;
+                pId.Value = job.Id;
                 cmd.Parameters.Add(pId);
+
+                SqlParameter pTitle = new SqlParameter();
+                pTitle.ParameterName = "@title";
+                pTitle.SqlDbType = System.Data.SqlDbType.VarChar;
+                pTitle.Value = job.Title;
+                cmd.Parameters.Add(pTitle);
+
+                SqlParameter pMin = new SqlParameter();
+                pMin.ParameterName = "@min";
+                pMin.SqlDbType = System.Data.SqlDbType.Int;
+                pMin.Value = job.MinSalary;
+                cmd.Parameters.Add(pMin);
+
+                SqlParameter pMax = new SqlParameter();
+                pMax.ParameterName = "@max";
+                pMax.SqlDbType = System.Data.SqlDbType.Int;
+                pMax.Value = job.MaxSalary;
+                cmd.Parameters.Add(pMax);
 
                 int result = cmd.ExecuteNonQuery();
                 transaction.Commit();
@@ -146,14 +184,14 @@ namespace MVC_DataBaseConnectivity.Models
             }
         }
 
-        //Delete Region
-        public int Delete(RegionModel region)
+        //Delete
+        public int Delete(Job job)
         {
             SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
-            cmd.CommandText = "delete from regions where id = @id;";
+            cmd.CommandText = "delete from jobs where id = @id;";
 
             SqlTransaction transaction = _connection.BeginTransaction();
             cmd.Transaction = transaction;
@@ -162,7 +200,7 @@ namespace MVC_DataBaseConnectivity.Models
                 SqlParameter pId = new SqlParameter();
                 pId.ParameterName = "@id";
                 pId.SqlDbType = System.Data.SqlDbType.Int;
-                pId.Value = region.Id;
+                pId.Value = job.Id;
                 cmd.Parameters.Add(pId);
 
                 int result = cmd.ExecuteNonQuery();

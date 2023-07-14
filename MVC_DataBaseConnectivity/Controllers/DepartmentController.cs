@@ -6,10 +6,10 @@ namespace MVC_DataBaseConnectivity.Controllers
 {
     public class DepartmentController
     {
-        private DepartmentModel _departmentModel = new DepartmentModel();
+        private Department _departmentModel = new Department();
         private DepartmentView _departmentView = new DepartmentView();
 
-        public DepartmentController(DepartmentModel department, DepartmentView departmentView)
+        public DepartmentController(Department department, DepartmentView departmentView)
         {
             _departmentModel = department;
             _departmentView = departmentView;

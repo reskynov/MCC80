@@ -6,10 +6,10 @@ namespace MVC_DataBaseConnectivity.Controllers
 {
     public class CountryController
     {
-        private CountryModel _countryModel = new CountryModel();
+        private Country _countryModel = new Country();
         private CountryView _countryView = new CountryView();
 
-        public CountryController(CountryModel country, CountryView countryView)
+        public CountryController(Country country, CountryView countryView)
         {
             _countryModel = country;
             _countryView = countryView;
@@ -88,13 +88,13 @@ namespace MVC_DataBaseConnectivity.Controllers
             var result = _countryModel.Delete(country);
             switch (result)
             {
-                case 0:
+                case 0 :
                     _countryView.Failed();
                     break;
-                case -1:
+                case -1 :
                     _countryView.ErrorDatabase();
                     break;
-                default:
+                default :
                     _countryView.Success();
                     break;
             }

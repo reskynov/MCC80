@@ -1,13 +1,11 @@
 ﻿using MVC_DataBaseConnectivity.Models;
 using System;
-using System.Numerics;
-using System.Reflection.PortableExecutable;
 
 namespace MVC_DataBaseConnectivity.Views
 {
     public class EmployeeView
     {
-        public void GetAll(List<EmployeeModel> employees)
+        public void GetAll(List<Employee> employees)
         {
             foreach (var employee in employees)
             {
@@ -15,29 +13,36 @@ namespace MVC_DataBaseConnectivity.Views
             }
         }
 
-        public void GetById(EmployeeModel employee)
+        public void GetById(Employee employee)
         {
-            Console.WriteLine("ID : " + employee.Id);
-            if (employee.Lname == null || employee.Lname == "")
+            if (employee.Id == 0)
             {
-                Console.WriteLine("Full Name : " + employee.Fname);
+                DataNotFound();
             }
             else
             {
-                Console.WriteLine("Full Name : " + employee.Fname + " " + employee.Lname);
+                Console.WriteLine("ID : " + employee.Id);
+                if (employee.Lname == null || employee.Lname == "")
+                {
+                    Console.WriteLine("Full Name : " + employee.Fname);
+                }
+                else
+                {
+                    Console.WriteLine("Full Name : " + employee.Fname + " " + employee.Lname);
+                }
+                Console.WriteLine("Email : " + employee.Email);
+                Console.WriteLine("Phone Number : " + (employee.Phone == "" ? "NULL" : employee.Phone));
+                Console.WriteLine("Hire Date : " + employee.HireDate);
+                Console.WriteLine("Salary : " + (employee.Salary == -1 ? 0 : employee.Salary));
+                Console.WriteLine("Commission : " + (employee.Comission == 0 ? "NULL" : employee.Comission));
+                Console.WriteLine("Manager ID : " + (employee.ManagerId == -1 ? "EMPTY" : employee.ManagerId));
+                Console.WriteLine("Job ID : " + employee.JobId);
+                Console.WriteLine("Department ID : " + employee.DepartmentId);
+                Console.WriteLine("==========================");
             }
-            Console.WriteLine("Email : " + employee.Email);
-            Console.WriteLine("Phone Number : " + (employee.Phone == "" ? "NULL" : employee.Phone));
-            Console.WriteLine("Hire Date : " + employee.HireDate);
-            Console.WriteLine("Salary : " + (employee.Salary == -1 ? 0 : employee.Salary));
-            Console.WriteLine("Commission : " + (employee.Comission == 0 ? "NULL" : employee.Comission));
-            Console.WriteLine("Manager ID : " + (employee.ManagerId == -1 ? "EMPTY" : employee.ManagerId));
-            Console.WriteLine("Job ID : " + employee.JobId);
-            Console.WriteLine("Department ID : " + employee.DepartmentId);
-            Console.WriteLine("==========================");
         }
 
-        public EmployeeModel Insert()
+        public Employee Insert()
         {
             Console.Write("\nInput Employee's ID : ");
             int id = Int32.Parse(Console.ReadLine());
@@ -69,7 +74,7 @@ namespace MVC_DataBaseConnectivity.Views
             Console.Write("Input Employee's Department ID : ");
             int departmentId = Int32.Parse(Console.ReadLine());
 
-            return new EmployeeModel
+            return new Employee
             {
                 Id = id,
                 Fname = fname,
@@ -85,7 +90,7 @@ namespace MVC_DataBaseConnectivity.Views
             };
         }
 
-        public EmployeeModel Update()
+        public Employee Update()
         {
             Console.Write("Input Employee's ID to Update : ");
             int id = Int32.Parse(Console.ReadLine());
@@ -117,7 +122,7 @@ namespace MVC_DataBaseConnectivity.Views
             Console.Write("Input Updated Employee's Department ID : ");
             int departmentId = Int32.Parse(Console.ReadLine());
 
-            return new EmployeeModel
+            return new Employee
             {
                 Id = id,
                 Fname = fname,
@@ -133,11 +138,11 @@ namespace MVC_DataBaseConnectivity.Views
             };
         }
 
-        public EmployeeModel Delete()
+        public Employee Delete()
         {
             Console.Write("Input Employee ID To Delete : ");
             int id = Convert.ToInt32(Console.ReadLine());
-            return new EmployeeModel
+            return new Employee
             {
                 Id = id,
                 Fname = "",

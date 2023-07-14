@@ -3,72 +3,69 @@ using System.Data.SqlClient;
 
 namespace MVC_DataBaseConnectivity.Models
 {
-    public class CountryModel
+    public class Region
     {
-        
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public int RegionId { get; set; }
+        public int Id { get; set; }
+        public string? Name { get; set; }
 
-        public List<CountryModel> GetAll()
+        //Get All
+        public List<Region> GetAll()
         {
             try
             {
                 SqlConnection _connection = DatabaseConnection.Connection();
-                List<CountryModel> countries = new List<CountryModel>();
+                var regions = new List<Region>();
                 _connection.Open();
 
                 SqlCommand cmd = _connection.CreateCommand();
                 cmd.Connection = _connection;
-                cmd.CommandText = "select * from countries";
+                cmd.CommandText = "select * from regions";
                 using SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    CountryModel country = new CountryModel();
-                    country.Id = reader.GetString(0);
-                    country.Name = reader.GetString(1);
-                    country.RegionId = reader.GetInt32(2);
-                    countries.Add(country);
+                    Region region = new Region();
+                    region.Id = reader.GetInt32(0);
+                    region.Name = reader.GetString(1);
+                    regions.Add(region);
                 }
                 reader.Close();
                 _connection.Close();
-                return countries;
+                return regions;
             }
             catch
             {
-                return new List<CountryModel>();
+                return new List<Region>();
             }
         }
 
-        public CountryModel? GetById(string id)
+        //Get By ID Region
+        public Region? GetById(int id)
         {
             try
             {
                 SqlConnection _connection = DatabaseConnection.Connection();
-                CountryModel country = new CountryModel();
                 _connection.Open();
+                var region = new Region();
 
                 SqlCommand cmd = _connection.CreateCommand();
                 cmd.Connection = _connection;
-                cmd.CommandText = "select * from countries where id = @id";
+                cmd.CommandText = "select * from regions where id = @id";
 
                 SqlParameter pId = new SqlParameter();
                 pId.ParameterName = "@id";
-                pId.SqlDbType = System.Data.SqlDbType.Char;
+                pId.SqlDbType = System.Data.SqlDbType.Int;
                 pId.Value = id;
                 cmd.Parameters.Add(pId);
 
                 using SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    country.Id = reader.GetString(0);
-                    country.Name = reader.GetString(1);
-                    country.RegionId = reader.GetInt32(2);
+                    region.Id = reader.GetInt32(0);
+                    region.Name = reader.GetString(1);
                 }
                 reader.Close();
                 _connection.Close();
-
-                return country;
+                return region;
             }
             catch
             {
@@ -76,41 +73,30 @@ namespace MVC_DataBaseConnectivity.Models
             }
         }
 
-        //Insert
-        public int Insert(CountryModel country)
+        //Insert Region
+        public int Insert(Region region)
         {
             SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
-            cmd.CommandText = "insert into countries (id, name, region_id) values (@id, @name, @region_id);";
+            cmd.CommandText = "insert into regions (name) values (@name);";
 
             SqlTransaction transaction = _connection.BeginTransaction();
             cmd.Transaction = transaction;
             try
             {
-                SqlParameter pId = new SqlParameter();
-                pId.ParameterName = "@id";
-                pId.SqlDbType = System.Data.SqlDbType.Char;
-                pId.Value = country.Id;
-                cmd.Parameters.Add(pId);
-
                 SqlParameter pName = new SqlParameter();
                 pName.ParameterName = "@name";
                 pName.SqlDbType = System.Data.SqlDbType.VarChar;
-                pName.Value = country.Name;
+                pName.Value = region.Name;
                 cmd.Parameters.Add(pName);
 
-                SqlParameter pRegionId = new SqlParameter();
-                pRegionId.ParameterName = "@region_id";
-                pRegionId.SqlDbType = System.Data.SqlDbType.Int;
-                pRegionId.Value = country.RegionId;
-                cmd.Parameters.Add(pRegionId);
-
                 int result = cmd.ExecuteNonQuery();
+
                 transaction.Commit();
                 _connection.Close();
-
+                
                 return result;
             }
             catch
@@ -121,14 +107,14 @@ namespace MVC_DataBaseConnectivity.Models
             }
         }
 
-        //Update
-        public int Update(CountryModel country)
+        //Update Region
+        public int Update(Region region)
         {
             SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
-            cmd.CommandText = "update countries set name = @name, region_id = @regionId where id = @id;";
+            cmd.CommandText = "update regions set name = @name where id = @id;";
 
             SqlTransaction transaction = _connection.BeginTransaction();
             cmd.Transaction = transaction;
@@ -137,20 +123,14 @@ namespace MVC_DataBaseConnectivity.Models
                 SqlParameter pName = new SqlParameter();
                 pName.ParameterName = "@name";
                 pName.SqlDbType = System.Data.SqlDbType.VarChar;
-                pName.Value = country.Name;
+                pName.Value = region.Name;
                 cmd.Parameters.Add(pName);
 
                 SqlParameter pId = new SqlParameter();
                 pId.ParameterName = "@id";
-                pId.SqlDbType = System.Data.SqlDbType.Char;
-                pId.Value = country.Id;
+                pId.SqlDbType = System.Data.SqlDbType.Int;
+                pId.Value = region.Id;
                 cmd.Parameters.Add(pId);
-
-                SqlParameter pRegionId = new SqlParameter();
-                pRegionId.ParameterName = "@regionId";
-                pRegionId.SqlDbType = System.Data.SqlDbType.Int;
-                pRegionId.Value = country.RegionId;
-                cmd.Parameters.Add(pRegionId);
 
                 int result = cmd.ExecuteNonQuery();
                 transaction.Commit();
@@ -166,14 +146,14 @@ namespace MVC_DataBaseConnectivity.Models
             }
         }
 
-        //Delete
-        public int Delete(CountryModel country)
+        //Delete Region
+        public int Delete(Region region)
         {
             SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
-            cmd.CommandText = "delete from countries where id = @id;";
+            cmd.CommandText = "delete from regions where id = @id;";
 
             SqlTransaction transaction = _connection.BeginTransaction();
             cmd.Transaction = transaction;
@@ -181,15 +161,15 @@ namespace MVC_DataBaseConnectivity.Models
             {
                 SqlParameter pId = new SqlParameter();
                 pId.ParameterName = "@id";
-                pId.SqlDbType = System.Data.SqlDbType.Char;
-                pId.Value = country.Id;
+                pId.SqlDbType = System.Data.SqlDbType.Int;
+                pId.Value = region.Id;
                 cmd.Parameters.Add(pId);
 
                 int result = cmd.ExecuteNonQuery();
                 transaction.Commit();
+                _connection.Close();
 
                 return result;
-
             }
             catch
             {

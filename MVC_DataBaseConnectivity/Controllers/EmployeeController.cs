@@ -6,10 +6,10 @@ namespace MVC_DataBaseConnectivity.Controllers
 {
     public class EmployeeController
     {
-        private EmployeeModel _employeeModel = new EmployeeModel();
+        private Employee _employeeModel = new Employee();
         private EmployeeView _employeeView = new EmployeeView();
 
-        public EmployeeController(EmployeeModel employee, EmployeeView employeeView)
+        public EmployeeController(Employee employee, EmployeeView employeeView)
         {
             _employeeModel = employee;
             _employeeView = employeeView;

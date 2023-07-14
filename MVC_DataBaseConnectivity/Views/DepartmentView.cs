@@ -1,11 +1,10 @@
 ﻿using MVC_DataBaseConnectivity.Models;
-using System;
 
 namespace MVC_DataBaseConnectivity.Views
 {
     public class DepartmentView
     {
-        public void GetAll(List<DepartmentModel> departments)
+        public void GetAll(List<Department> departments)
         {
             foreach (var department in departments)
             {
@@ -13,16 +12,23 @@ namespace MVC_DataBaseConnectivity.Views
             }
         }
 
-        public void GetById(DepartmentModel department)
+        public void GetById(Department department)
         {
-            Console.WriteLine("Id : " + department.Id);
-            Console.WriteLine("Name : " + department.Name);
-            Console.WriteLine("Location ID : " + department.LocationId);
-            Console.WriteLine("Manager ID : " + (department.ManagerId == -1 ? "EMPTY" : department.ManagerId));
-            Console.WriteLine("==========================");
+            if (department.Id == 0)
+            {
+                DataNotFound();
+            }
+            else
+            {
+                Console.WriteLine("Id : " + department.Id);
+                Console.WriteLine("Name : " + department.Name);
+                Console.WriteLine("Location ID : " + department.LocationId);
+                Console.WriteLine("Manager ID : " + (department.ManagerId == -1 ? "EMPTY" : department.ManagerId));
+                Console.WriteLine("==========================");
+            }
         }
 
-        public DepartmentModel Insert()
+        public Department Insert()
         {
             Console.Write("Input Department ID : ");
             int id = Convert.ToInt32(Console.ReadLine());
@@ -33,7 +39,7 @@ namespace MVC_DataBaseConnectivity.Views
             Console.Write("Input Department Manager ID : ");
             int? managerId = Convert.ToInt32(Console.ReadLine());
 
-            return new DepartmentModel
+            return new Department
             {
                 Id = id,
                 Name = name,
@@ -42,7 +48,7 @@ namespace MVC_DataBaseConnectivity.Views
             };
         }
 
-        public DepartmentModel Update()
+        public Department Update()
         {
             Console.Write("Input Department ID to Update : ");
             int id = Convert.ToInt32(Console.ReadLine());
@@ -53,7 +59,7 @@ namespace MVC_DataBaseConnectivity.Views
             Console.Write("Input Updated Department Manager ID : ");
             int? managerId = Convert.ToInt32(Console.ReadLine());
 
-            return new DepartmentModel
+            return new Department
             {
                 Id = id,
                 Name = name,
@@ -62,11 +68,11 @@ namespace MVC_DataBaseConnectivity.Views
             };
         }
 
-        public DepartmentModel Delete()
+        public Department Delete()
         {
             Console.Write("Input Department ID to Update : ");
             int id = Convert.ToInt32(Console.ReadLine());
-            return new DepartmentModel
+            return new Department
             {
                 Id = id,
                 Name = "",

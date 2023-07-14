@@ -6,10 +6,10 @@ namespace MVC_DataBaseConnectivity.Controllers
 {
     public class RegionController
     {
-        private RegionModel _regionModel = new RegionModel();
+        private Region _regionModel = new Region();
         private RegionView _regionView = new RegionView();
 
-        public RegionController(RegionModel region, RegionView regionView) 
+        public RegionController(Region region, RegionView regionView) 
         {
             _regionModel = region;
             _regionView = regionView;

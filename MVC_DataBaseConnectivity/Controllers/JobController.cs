@@ -6,10 +6,10 @@ namespace MVC_DataBaseConnectivity.Controllers
 {
     public class JobController
     {
-        private JobModel _jobModel = new JobModel();
+        private Job _jobModel = new Job();
         private JobView _jobView = new JobView();
 
-        public JobController(JobModel job, JobView jobView)
+        public JobController(Job job, JobView jobView)
         {
             _jobModel = job;
             _jobView = jobView;

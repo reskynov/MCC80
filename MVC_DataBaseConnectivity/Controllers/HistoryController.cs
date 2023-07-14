@@ -6,10 +6,10 @@ namespace MVC_DataBaseConnectivity.Controllers
 {
     public class HistoryController
     {
-        private HistoryModel _historyModel = new HistoryModel();
+        private History _historyModel = new History();
         private HistoryView _historyView = new HistoryView();
 
-        public HistoryController(HistoryModel history, HistoryView historyView)
+        public HistoryController(History history, HistoryView historyView)
         {
             _historyModel = history;
             _historyView = historyView;

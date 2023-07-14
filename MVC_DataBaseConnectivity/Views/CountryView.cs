@@ -5,7 +5,7 @@ namespace MVC_DataBaseConnectivity.Views
 {
     public class CountryView
     {
-        public void GetAll(List<CountryModel> countries)
+        public void GetAll(List<Country> countries)
         {
             foreach (var country in countries)
             {
@@ -13,14 +13,21 @@ namespace MVC_DataBaseConnectivity.Views
             }
         }
 
-        public void GetById(CountryModel country)
+        public void GetById(Country country)
         {
-            Console.WriteLine("Id: " + country.Id);
-            Console.WriteLine("Name: " + country.Name);
-            Console.WriteLine("==========================");
+            if (country.Id is null)
+            {
+                DataNotFound();
+            }
+            else
+            {
+                Console.WriteLine("Id: " + country.Id);
+                Console.WriteLine("Name: " + country.Name);
+                Console.WriteLine("==========================");
+            }
         }
 
-        public CountryModel Insert()
+        public Country Insert()
         {
             Console.Write("Input Country ID : ");
             string id = Console.ReadLine();
@@ -28,7 +35,7 @@ namespace MVC_DataBaseConnectivity.Views
             string name = Console.ReadLine();
             Console.Write("Input Country Region ID : ");
             int regionId = Convert.ToInt32(Console.ReadLine());
-            return new CountryModel
+            return new Country
             {
                 Id = id,
                 Name = name,
@@ -36,7 +43,7 @@ namespace MVC_DataBaseConnectivity.Views
             };
         }
 
-        public CountryModel Update()
+        public Country Update()
         {
             Console.Write("Input Country ID to Update : ");
             string id = Console.ReadLine();
@@ -44,7 +51,7 @@ namespace MVC_DataBaseConnectivity.Views
             string name = Console.ReadLine();
             Console.Write("Input Updated Country Region ID : ");
             int regionId = Convert.ToInt32(Console.ReadLine());
-            return new CountryModel
+            return new Country
             {
                 Id = id,
                 Name = name,
@@ -52,11 +59,11 @@ namespace MVC_DataBaseConnectivity.Views
             };
         }
 
-        public CountryModel Delete()
+        public Country Delete()
         {
             Console.Write("Input Country ID To Delete : ");
             string id = Console.ReadLine();
-            return new CountryModel
+            return new Country
             {
                 Id = id,
                 Name = "",

@@ -6,10 +6,10 @@ namespace MVC_DataBaseConnectivity.Controllers
 {
     public class LocationController
     {
-        private LocationModel _locationModel = new LocationModel();
+        private Location _locationModel = new Location();
         private LocationView _locationView = new LocationView();
 
-        public LocationController(LocationModel location, LocationView locationView)
+        public LocationController(Location location, LocationView locationView)
         {
             _locationModel = location;
             _locationView = locationView;

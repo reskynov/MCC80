@@ -1,11 +1,12 @@
 ﻿using MVC_DataBaseConnectivity.Models;
 using System;
+using System.Diagnostics.Metrics;
 
 namespace MVC_DataBaseConnectivity.Views
 {
     public class JobView
     {
-        public void GetAll(List<JobModel> jobs)
+        public void GetAll(List<Job> jobs)
         {
             foreach (var job in jobs)
             {
@@ -13,15 +14,22 @@ namespace MVC_DataBaseConnectivity.Views
             }
         }
 
-        public void GetById(JobModel job)
+        public void GetById(Job job)
         {
-            Console.WriteLine("Id : " + job.Id);
-            Console.WriteLine("Title : " + job.Title);
-            Console.WriteLine("Salary Range : $" + job.MinSalary + " - $" + job.MaxSalary);
-            Console.WriteLine("==========================");
+            if (job.Id is null)
+            {
+                DataNotFound();
+            }
+            else
+            {
+                Console.WriteLine("Id : " + job.Id);
+                Console.WriteLine("Title : " + job.Title);
+                Console.WriteLine("Salary Range : $" + job.MinSalary + " - $" + job.MaxSalary);
+                Console.WriteLine("==========================");
+            }
         }
 
-        public JobModel Insert()
+        public Job Insert()
         {
             Console.Write("Input Job ID : ");
             string id = Console.ReadLine();
@@ -31,7 +39,7 @@ namespace MVC_DataBaseConnectivity.Views
             int minSalary = Convert.ToInt32(Console.ReadLine());
             Console.Write("Input Max Salary : ");
             int maxSalary = Convert.ToInt32(Console.ReadLine());
-            return new JobModel
+            return new Job
             {
                 Id = id,
                 Title = title,
@@ -40,7 +48,7 @@ namespace MVC_DataBaseConnectivity.Views
             };
         }
 
-        public JobModel Update()
+        public Job Update()
         {
             Console.Write("Input Job ID to Update: ");
             string id = Console.ReadLine();
@@ -50,7 +58,7 @@ namespace MVC_DataBaseConnectivity.Views
             int minSalary = Convert.ToInt32(Console.ReadLine());
             Console.Write("Input Updated Max Salary : ");
             int maxSalary = Convert.ToInt32(Console.ReadLine());
-            return new JobModel
+            return new Job
             {
                 Id = id,
                 Title = title,
@@ -59,11 +67,11 @@ namespace MVC_DataBaseConnectivity.Views
             };
         }
 
-        public JobModel Delete()
+        public Job Delete()
         {
             Console.Write("Input Job ID To Delete : ");
             string id = Console.ReadLine();
-            return new JobModel
+            return new Job
             {
                 Id = id,
                 Title = "",

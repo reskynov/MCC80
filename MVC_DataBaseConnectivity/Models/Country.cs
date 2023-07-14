@@ -3,76 +3,72 @@ using System.Data.SqlClient;
 
 namespace MVC_DataBaseConnectivity.Models
 {
-    public class DepartmentModel
+    public class Country
     {
-        public int Id { get; set; }
+        
+        public string Id { get; set; }
         public string Name { get; set; }
-        public int LocationId { get; set; }
-        public int? ManagerId { get; set; }
+        public int RegionId { get; set; }
 
-        public List<DepartmentModel> GetAll()
+        public List<Country> GetAll()
         {
             try
             {
                 SqlConnection _connection = DatabaseConnection.Connection();
+                List<Country> countries = new List<Country>();
                 _connection.Open();
-
-                List<DepartmentModel> departments = new List<DepartmentModel>();
 
                 SqlCommand cmd = _connection.CreateCommand();
                 cmd.Connection = _connection;
-                cmd.CommandText = "select * from departments";
+                cmd.CommandText = "select * from countries";
                 using SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    DepartmentModel department = new DepartmentModel();
-                    department.Id = reader.GetInt32(0);
-                    department.Name = reader.GetString(1);
-                    department.LocationId = reader.GetInt32(2);
-                    department.ManagerId = reader.IsDBNull(3) ? -1 : reader.GetInt32(3);
-                    departments.Add(department);
+                    Country country = new Country();
+                    country.Id = reader.GetString(0);
+                    country.Name = reader.GetString(1);
+                    country.RegionId = reader.GetInt32(2);
+                    countries.Add(country);
                 }
                 reader.Close();
                 _connection.Close();
-
-                return departments;
+                return countries;
             }
             catch
             {
-                return new List<DepartmentModel>();
+                return new List<Country>();
             }
         }
 
-        //Get By ID
-        public DepartmentModel? GetById(int id)
+        public Country? GetById(string id)
         {
             try
             {
                 SqlConnection _connection = DatabaseConnection.Connection();
+                Country country = new Country();
                 _connection.Open();
-                DepartmentModel department = new DepartmentModel();
 
                 SqlCommand cmd = _connection.CreateCommand();
                 cmd.Connection = _connection;
-                cmd.CommandText = "select * from departments where id = @id";
+                cmd.CommandText = "select * from countries where id = @id";
 
                 SqlParameter pId = new SqlParameter();
                 pId.ParameterName = "@id";
-                pId.SqlDbType = System.Data.SqlDbType.Int;
+                pId.SqlDbType = System.Data.SqlDbType.Char;
                 pId.Value = id;
                 cmd.Parameters.Add(pId);
 
                 using SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    department.Id = reader.GetInt32(0);
-                    department.Name = reader.GetString(1);
-                    department.LocationId = reader.GetInt32(2);
-                    department.ManagerId = reader.IsDBNull(3) ? -1 : reader.GetInt32(3);
+                    country.Id = reader.GetString(0);
+                    country.Name = reader.GetString(1);
+                    country.RegionId = reader.GetInt32(2);
                 }
                 reader.Close();
                 _connection.Close();
-                return department;
+
+                return country;
             }
             catch
             {
@@ -81,14 +77,13 @@ namespace MVC_DataBaseConnectivity.Models
         }
 
         //Insert
-        public int Insert(DepartmentModel department)
+        public int Insert(Country country)
         {
             SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
-            cmd.CommandText = "insert into departments (id, name, location_id, manager_id) " +
-                "values (@id, @name, @locationId, @managerId);";
+            cmd.CommandText = "insert into countries (id, name, region_id) values (@id, @name, @region_id);";
 
             SqlTransaction transaction = _connection.BeginTransaction();
             cmd.Transaction = transaction;
@@ -96,27 +91,21 @@ namespace MVC_DataBaseConnectivity.Models
             {
                 SqlParameter pId = new SqlParameter();
                 pId.ParameterName = "@id";
-                pId.SqlDbType = System.Data.SqlDbType.Int;
-                pId.Value = department.Id;
+                pId.SqlDbType = System.Data.SqlDbType.Char;
+                pId.Value = country.Id;
                 cmd.Parameters.Add(pId);
 
                 SqlParameter pName = new SqlParameter();
                 pName.ParameterName = "@name";
                 pName.SqlDbType = System.Data.SqlDbType.VarChar;
-                pName.Value = department.Name;
+                pName.Value = country.Name;
                 cmd.Parameters.Add(pName);
 
-                SqlParameter pLocId = new SqlParameter();
-                pLocId.ParameterName = "@locationId";
-                pLocId.SqlDbType = System.Data.SqlDbType.Int;
-                pLocId.Value = department.LocationId;
-                cmd.Parameters.Add(pLocId);
-
-                SqlParameter pManId = new SqlParameter();
-                pManId.ParameterName = "@managerId";
-                pManId.SqlDbType = System.Data.SqlDbType.Int;
-                pManId.Value = department.ManagerId;
-                cmd.Parameters.Add(pManId);
+                SqlParameter pRegionId = new SqlParameter();
+                pRegionId.ParameterName = "@region_id";
+                pRegionId.SqlDbType = System.Data.SqlDbType.Int;
+                pRegionId.Value = country.RegionId;
+                cmd.Parameters.Add(pRegionId);
 
                 int result = cmd.ExecuteNonQuery();
                 transaction.Commit();
@@ -133,42 +122,35 @@ namespace MVC_DataBaseConnectivity.Models
         }
 
         //Update
-        public int Update(DepartmentModel department)
+        public int Update(Country country)
         {
             SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
-            cmd.CommandText = "update departments set name = @name, location_id = @locationId, manager_id = @managerId " +
-                "where id = @id;";
+            cmd.CommandText = "update countries set name = @name, region_id = @regionId where id = @id;";
 
             SqlTransaction transaction = _connection.BeginTransaction();
             cmd.Transaction = transaction;
             try
             {
-                SqlParameter pId = new SqlParameter();
-                pId.ParameterName = "@id";
-                pId.SqlDbType = System.Data.SqlDbType.Int;
-                pId.Value = department.Id;
-                cmd.Parameters.Add(pId);
-
                 SqlParameter pName = new SqlParameter();
                 pName.ParameterName = "@name";
                 pName.SqlDbType = System.Data.SqlDbType.VarChar;
-                pName.Value = department.Name;
+                pName.Value = country.Name;
                 cmd.Parameters.Add(pName);
 
-                SqlParameter pLocId = new SqlParameter();
-                pLocId.ParameterName = "@locationId";
-                pLocId.SqlDbType = System.Data.SqlDbType.Int;
-                pLocId.Value = department.LocationId;
-                cmd.Parameters.Add(pLocId);
+                SqlParameter pId = new SqlParameter();
+                pId.ParameterName = "@id";
+                pId.SqlDbType = System.Data.SqlDbType.Char;
+                pId.Value = country.Id;
+                cmd.Parameters.Add(pId);
 
-                SqlParameter pManId = new SqlParameter();
-                pManId.ParameterName = "@managerId";
-                pManId.SqlDbType = System.Data.SqlDbType.Int;
-                pManId.Value = department.ManagerId;
-                cmd.Parameters.Add(pManId);
+                SqlParameter pRegionId = new SqlParameter();
+                pRegionId.ParameterName = "@regionId";
+                pRegionId.SqlDbType = System.Data.SqlDbType.Int;
+                pRegionId.Value = country.RegionId;
+                cmd.Parameters.Add(pRegionId);
 
                 int result = cmd.ExecuteNonQuery();
                 transaction.Commit();
@@ -185,13 +167,13 @@ namespace MVC_DataBaseConnectivity.Models
         }
 
         //Delete
-        public int Delete(DepartmentModel department)
+        public int Delete(Country country)
         {
             SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
             SqlCommand cmd = _connection.CreateCommand();
             cmd.Connection = _connection;
-            cmd.CommandText = "delete from departments where id = @id;";
+            cmd.CommandText = "delete from countries where id = @id;";
 
             SqlTransaction transaction = _connection.BeginTransaction();
             cmd.Transaction = transaction;
@@ -199,15 +181,15 @@ namespace MVC_DataBaseConnectivity.Models
             {
                 SqlParameter pId = new SqlParameter();
                 pId.ParameterName = "@id";
-                pId.SqlDbType = System.Data.SqlDbType.Int;
-                pId.Value = department.Id;
+                pId.SqlDbType = System.Data.SqlDbType.Char;
+                pId.Value = country.Id;
                 cmd.Parameters.Add(pId);
 
                 int result = cmd.ExecuteNonQuery();
                 transaction.Commit();
-                _connection.Close();
 
                 return result;
+
             }
             catch
             {

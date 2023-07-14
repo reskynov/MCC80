@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 
 namespace MVC_DataBaseConnectivity.Models
 {
-    public class LocationModel
+    public class Location
     {
         
         public int Id { get; set; }
@@ -15,12 +15,12 @@ namespace MVC_DataBaseConnectivity.Models
         public string? CountryId { get; set; }
         
         //GET ALL
-        public List<LocationModel> GetAll()
+        public List<Location> GetAll()
         {
             SqlConnection _connection = DatabaseConnection.Connection();
             try
             {
-                List<LocationModel> locations = new List<LocationModel>();
+                List<Location> locations = new List<Location>();
                 _connection.Open();
 
                 SqlCommand cmd = _connection.CreateCommand();
@@ -29,7 +29,7 @@ namespace MVC_DataBaseConnectivity.Models
                 using SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    LocationModel location = new LocationModel();
+                    Location location = new Location();
 
                     location.Id = reader.GetInt32(0);
                     location.Street = reader.IsDBNull(1) ? "" : reader.GetString(1);
@@ -45,18 +45,18 @@ namespace MVC_DataBaseConnectivity.Models
             }
             catch
             {
-                return new List<LocationModel>();
+                return new List<Location>();
             }
         }
 
         //Get By ID
-        public LocationModel? GetById(int id)
+        public Location? GetById(int id)
         {
             try
             {
                 SqlConnection _connection = DatabaseConnection.Connection();
                 _connection.Open();
-                LocationModel location = new LocationModel();
+                Location location = new Location();
 
                 SqlCommand cmd = _connection.CreateCommand();
                 cmd.Connection = _connection;
@@ -89,7 +89,7 @@ namespace MVC_DataBaseConnectivity.Models
         }
 
         //Insert
-        public int Insert(LocationModel location)
+        public int Insert(Location location)
         {
             SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
@@ -154,7 +154,7 @@ namespace MVC_DataBaseConnectivity.Models
         }
 
         //Update
-        public int Update(LocationModel location)
+        public int Update(Location location)
         {
             SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();
@@ -219,7 +219,7 @@ namespace MVC_DataBaseConnectivity.Models
         }
 
         //Delete
-        public int Delete(LocationModel location)
+        public int Delete(Location location)
         {
             SqlConnection _connection = DatabaseConnection.Connection();
             _connection.Open();

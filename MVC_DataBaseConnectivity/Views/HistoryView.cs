@@ -1,12 +1,13 @@
 ﻿using MVC_DataBaseConnectivity.Models;
 using System;
+using System.Diagnostics.Metrics;
 using System.Globalization;
 
 namespace MVC_DataBaseConnectivity.Views
 {
     public class HistoryView
     {
-        public void GetAll(List<HistoryModel> histories)
+        public void GetAll(List<History> histories)
         {
             foreach (var history in histories)
             {
@@ -14,23 +15,31 @@ namespace MVC_DataBaseConnectivity.Views
             }
         }
 
-        public void GetById(HistoryModel history)
+        public void GetById(History history)
         {
-            Console.WriteLine("Start Date : " + history.StartDate);
-            Console.WriteLine("Employee ID : " + history.EmployeeId);
-            if (history.EndDate is null)
+            if (history.EmployeeId == 0 )
             {
-                Console.WriteLine("End Date : NULL" );
-            } else
-            {
-                Console.WriteLine("End Date : " + history.EndDate);
+                DataNotFound();
             }
-            Console.WriteLine("Department ID : " + history.DepartmentId);
-            Console.WriteLine("Job ID : " + history.JobId);
-            Console.WriteLine("==========================");
+            else
+            {
+                Console.WriteLine("Start Date : " + history.StartDate);
+                Console.WriteLine("Employee ID : " + history.EmployeeId);
+                if (history.EndDate is null)
+                {
+                    Console.WriteLine("End Date : NULL");
+                }
+                else
+                {
+                    Console.WriteLine("End Date : " + history.EndDate);
+                }
+                Console.WriteLine("Department ID : " + history.DepartmentId);
+                Console.WriteLine("Job ID : " + history.JobId);
+                Console.WriteLine("==========================");
+            }
         }
 
-        public HistoryModel Insert()
+        public History Insert()
         {
             Console.Write("Input Employee ID : ");
             int id = Convert.ToInt32(Console.ReadLine());
@@ -64,7 +73,7 @@ namespace MVC_DataBaseConnectivity.Views
             Console.Write("Input Job ID : ");
             string jobId = Console.ReadLine();
 
-            return new HistoryModel
+            return new History
             {
                 StartDate = DateTime.Now,
                 EmployeeId = id,
@@ -74,7 +83,7 @@ namespace MVC_DataBaseConnectivity.Views
             };
         }
 
-        public HistoryModel Update()
+        public History Update()
         {
             Console.Write("Input Employee ID To Update : ");
             int id = Convert.ToInt32(Console.ReadLine());
@@ -108,7 +117,7 @@ namespace MVC_DataBaseConnectivity.Views
                 }
             }
 
-            return new HistoryModel
+            return new History
             {
                 StartDate = DateTime.Now,
                 EmployeeId = id,
@@ -118,7 +127,7 @@ namespace MVC_DataBaseConnectivity.Views
             };
         }
 
-        public HistoryModel Delete()
+        public History Delete()
         {
             Console.Write("Input Employee ID To Delete : ");
             int id = Convert.ToInt32(Console.ReadLine());
@@ -127,7 +136,7 @@ namespace MVC_DataBaseConnectivity.Views
             Console.Write("Input Employee's Job ID to Delete : ");
             string jobId = Console.ReadLine();
 
-            return new HistoryModel
+            return new History
             {
                 StartDate = DateTime.Now,
                 EmployeeId = id,
