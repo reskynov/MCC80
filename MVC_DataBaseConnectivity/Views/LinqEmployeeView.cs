@@ -9,9 +9,8 @@ namespace MVC_DataBaseConnectivity.Views
 {
     public class LinqEmployeeView
     {
-        public void JoinedDataEmployee(List<LinqFiltered> joinedData)
+        public void JoinedDataEmployee(List<LinqEmployee> joinedData)
         {
-            joinedData.ToList();
             if(joinedData != null) 
             {
                 foreach (var data in joinedData)

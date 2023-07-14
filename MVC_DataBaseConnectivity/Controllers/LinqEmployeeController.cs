@@ -38,7 +38,7 @@ namespace MVC_DataBaseConnectivity.Controllers
                               join l in getLocation on c.Id equals l.CountryId
                               join d in getDepartment on l.Id equals d.LocationId
                               join e in getEmployee on d.Id equals e.DepartmentId
-                              select new LinqFiltered
+                              select new LinqEmployee
                               {
                                   Id = e.Id,
                                   FullName = e.Fname + " " + e.Lname,

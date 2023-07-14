@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MVC_DataBaseConnectivity.Models
 {
-    public class LinqFiltered
+    public class LinqEmployee
     {
         public int Id {get; set;}
         public string FullName { get; set; }
