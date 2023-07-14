@@ -28,7 +28,8 @@ namespace MVC_DataBaseConnectivity
                 Console.WriteLine("5. Locations");
                 Console.WriteLine("6. Countries");
                 Console.WriteLine("7. Regions");
-                Console.WriteLine("8. Exit");
+                Console.WriteLine("8. Filtered Employee");
+                Console.WriteLine("9. Exit");
                 Console.Write("Input Menu : ");
                 string inputMainMenu = Console.ReadLine();
                 switch (inputMainMenu)
@@ -70,6 +71,17 @@ namespace MVC_DataBaseConnectivity
                         break;
                     //exit
                     case "8":
+                        Console.Clear();
+                        Employee employee = new Employee();
+                        Department department = new Department();
+                        Location location = new Location();
+                        Country country = new Country();
+                        Region region = new Region();
+
+                        LinqEmployeeController linq = new LinqEmployeeController(employee, department, location, country, region);
+                        linq.JoinedDataEmployee();
+                        break;
+                    case "9":
                         System.Environment.Exit(1);
                         break;
                     //different input
