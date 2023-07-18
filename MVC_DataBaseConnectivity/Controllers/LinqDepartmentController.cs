@@ -39,9 +39,9 @@ namespace MVC_DataBaseConnectivity.Controllers
                              MaxSalary = empGroup.Max(e => e.Salary),
                              AverageSalary = empGroup.Average(e => e.Salary)
                          }).ToList();
+
             LinqDepartmentView departmentView = new LinqDepartmentView();
             departmentView.JoinedDataEmployee(result);
         }
-
     }
 }
