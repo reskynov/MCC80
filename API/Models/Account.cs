@@ -1,12 +1,20 @@
-﻿namespace API.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace API.Models
 {
-    public class Account
+    [Table("tb_m_accounts")]
+    public class Account : BaseEntity
     {
-        public Guid Guid { get; set; }
+        [Column("otp")]
         public int OTP { get; set; }
+        [Column("is_used")]
         public bool IsUsed { get; set; }
+        [Column("expired_date")]
         public DateTime ExpiredDate { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime ModifiedDate { get; set; }
+
+        //Cardinality
+        public ICollection<AccountRole>? AccountRoles { get; set;}
+
+        public Employee? Employee { get; set; } 
     }
 }
