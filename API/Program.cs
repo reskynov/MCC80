@@ -13,10 +13,12 @@ var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<BookingDbContext>(option => option.UseSqlServer(connection));
 
 // Add repositories to the container.
-builder.Services.AddScoped<IGenericRepository<University>, UniversityRepository>();
-builder.Services.AddScoped<IGenericRepository<Role>, RoleRepository>();
-builder.Services.AddScoped<IGenericRepository<Room>, RoomRepository>();
-builder.Services.AddScoped<IGenericRepository<AccountRole>, AccountRoleRepository>();
+builder.Services.AddScoped<IUniversityRepository, UniversityRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+builder.Services.AddScoped<IAccountRoleRepository, AccountRoleRepository>();
+builder.Services.AddScoped<IEducationRepository, EducationRepository>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
