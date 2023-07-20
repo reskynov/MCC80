@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Repositories;
 
-public class UniversityRepository : IUniversityRepository
+public class UniversityRepository : IGenericRepository<University>
 {
     private readonly BookingDbContext _context;
 
