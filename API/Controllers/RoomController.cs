@@ -9,9 +9,9 @@ namespace API.Controllers
     [Route("api/rooms")]
     public class RoomController : Controller
     {
-        private readonly IGenericRepository<Room> _roomRepository;
+        private readonly IRoomRepository _roomRepository;
 
-        public RoomController(IGenericRepository<Room> roomRepository)
+        public RoomController(IRoomRepository roomRepository)
         {
             _roomRepository = roomRepository;
         }

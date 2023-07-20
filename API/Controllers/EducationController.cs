@@ -8,9 +8,9 @@ namespace API.Controllers
     [Route("api/educations")]
     public class EducationController : Controller
     {
-        private readonly IGenericRepository<Education> _educationRepository;
+        private readonly IEducationRepository _educationRepository;
 
-        public EducationController(IGenericRepository<Education> educationRepository)
+        public EducationController(IEducationRepository educationRepository)
         {
             _educationRepository = educationRepository;
         }
