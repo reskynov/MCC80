@@ -5,20 +5,20 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("api/accounts")]
-    public class AccountController : Controller
+    [Route("api/employees")]
+    public class EmployeeController : Controller
     {
-        private readonly IAccountRepository _accountRepository;
+        private readonly IEmployeeRepository _employeeRepository;
 
-        public AccountController(IAccountRepository accountRepository)
+        public EmployeeController(IEmployeeRepository employeeRepository)
         {
-            _accountRepository = accountRepository;
+            _employeeRepository = employeeRepository;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            var result = _accountRepository.GetAll();
+            var result = _employeeRepository.GetAll();
             if (!result.Any())
             {
                 return NotFound();
@@ -30,7 +30,7 @@ namespace API.Controllers
         [HttpGet("{guid}")]
         public IActionResult GetByGuid(Guid guid)
         {
-            var result = _accountRepository.GetByGuid(guid);
+            var result = _employeeRepository.GetByGuid(guid);
             if (result is null)
             {
                 return NotFound();
@@ -40,9 +40,9 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Insert(Account account)
+        public IActionResult Insert(Employee employee)
         {
-            var result = _accountRepository.Create(account);
+            var result = _employeeRepository.Create(employee);
             if (result is null)
             {
                 return StatusCode(500, "Error Retrieve from database");
@@ -52,15 +52,15 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update(Account account)
+        public IActionResult Update(Employee employee)
         {
-            var check = _accountRepository.GetByGuid(account.Guid);
+            var check = _employeeRepository.GetByGuid(employee.Guid);
             if (check is null)
             {
                 return NotFound("Guid is not found");
             }
 
-            var result = _accountRepository.Update(account);
+            var result = _employeeRepository.Update(employee);
             if (!result)
             {
                 return StatusCode(500, "Error Retrieve from database");
@@ -72,13 +72,13 @@ namespace API.Controllers
         [HttpDelete]
         public IActionResult Delete(Guid guid)
         {
-            var data = _accountRepository.GetByGuid(guid);
+            var data = _employeeRepository.GetByGuid(guid);
             if (data is null)
             {
                 return NotFound("Guid is not found");
             }
 
-            var result = _accountRepository.Delete(data);
+            var result = _employeeRepository.Delete(data);
             if (!result)
             {
                 return StatusCode(500, "Error Retrieve from database");
