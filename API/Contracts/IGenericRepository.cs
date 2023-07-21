@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace API.Contracts
 {
-    public interface IGenericRepository<T> where T : class
+    public interface IGenericRepository<TEntity> where TEntity : class
     {
-        IEnumerable<T> GetAll();
-        T? GetByGuid(Guid guid);
-        T? Create(T obj);
-        bool Update(T obj);
-        bool Delete(T obj);
+        IEnumerable<TEntity> GetAll();
+        TEntity? GetByGuid(Guid guid);
+        TEntity? Create(TEntity obj);
+        bool Update(TEntity obj);
+        bool Delete(TEntity obj);
     }
 }

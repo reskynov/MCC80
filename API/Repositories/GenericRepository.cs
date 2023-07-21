@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
         private readonly BookingDbContext _context;
 
@@ -14,25 +14,25 @@ namespace API.Repositories
             _context = context;
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<TEntity> GetAll()
         {
-            return _context.Set<T>()
+            return _context.Set<TEntity>()
                            .ToList();
         }
 
-        public T? GetByGuid(Guid guid)
+        public TEntity? GetByGuid(Guid guid)
         {
-            var data = _context.Set<T>()
+            var data = _context.Set<TEntity>()
                                .Find(guid);
             _context.ChangeTracker.Clear();
             return data;
         }
 
-        public T? Create(T entity)
+        public TEntity? Create(TEntity entity)
         {
             try
             {
-                _context.Set<T>()
+                _context.Set<TEntity>()
                         .Add(entity);
                 _context.SaveChanges();
                 return entity;
@@ -43,7 +43,7 @@ namespace API.Repositories
             }
         }
 
-        public bool Update(T entity)
+        public bool Update(TEntity entity)
         {
             try
             {
@@ -58,11 +58,11 @@ namespace API.Repositories
             }
         }
 
-        public bool Delete(T entity)
+        public bool Delete(TEntity entity)
         {
             try
             {
-                _context.Set<T>()
+                _context.Set<TEntity>()
                         .Remove(entity);
                 _context.SaveChanges();
                 return true;
