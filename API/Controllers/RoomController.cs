@@ -1,5 +1,7 @@
 ﻿using API.Contracts;
+using API.DTOs.Rooms;
 using API.Models;
+using API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -9,20 +11,20 @@ namespace API.Controllers
     [Route("api/rooms")]
     public class RoomController : Controller
     {
-        private readonly IRoomRepository _roomRepository;
+        private readonly RoomService _roomService;
 
-        public RoomController(IRoomRepository roomRepository)
+        public RoomController(RoomService roomService)
         {
-            _roomRepository = roomRepository;
+            _roomService = roomService;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            var result = _roomRepository.GetAll();
+            var result = _roomService.GetAll();
             if (!result.Any())
             {
-                return NotFound();
+                return NotFound("no data found");
             }
 
             return Ok(result);
@@ -31,19 +33,19 @@ namespace API.Controllers
         [HttpGet("{guid}")]
         public IActionResult GetByGuid(Guid guid)
         {
-            var result = _roomRepository.GetByGuid(guid);
+            var result = _roomService.GetByGuid(guid);
             if (result is null)
             {
-                return NotFound();
+                return NotFound("no data found");
             }
 
             return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult Insert(Room room)
+        public IActionResult Insert(NewRoomDto newRoomDto)
         {
-            var result = _roomRepository.Create(room);
+            var result = _roomService.Create(newRoomDto);
             if (result is null)
             {
                 return StatusCode(500, "Error Retrieve from database");
@@ -53,16 +55,16 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update(Room room)
+        public IActionResult Update(RoomDto roomDto)
         {
-            var check = _roomRepository.GetByGuid(room.Guid);
-            if (check is null)
+            var result = _roomService.Update(roomDto);
+
+            if (result is -1)
             {
                 return NotFound("Guid is not found");
             }
 
-            var result = _roomRepository.Update(room);
-            if (!result)
+            if (result is 0)
             {
                 return StatusCode(500, "Error Retrieve from database");
             }
@@ -73,19 +75,19 @@ namespace API.Controllers
         [HttpDelete]
         public IActionResult Delete(Guid guid)
         {
-            var data = _roomRepository.GetByGuid(guid);
-            if (data is null)
+            var result = _roomService.Delete(guid);
+
+            if (result is -1)
             {
                 return NotFound("Guid is not found");
             }
 
-            var result = _roomRepository.Delete(data);
-            if (!result)
+            if (result is 0)
             {
                 return StatusCode(500, "Error Retrieve from database");
             }
 
-            return Ok("Delete success");
+            return Ok("Update success");
         }
     }
 }

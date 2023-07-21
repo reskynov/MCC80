@@ -22,7 +22,6 @@
     <Folder Include="DTOs\Bookings\" />
     <Folder Include="DTOs\Educations\" />
     <Folder Include="DTOs\Employees\" />
-    <Folder Include="DTOs\Rooms\" />
   </ItemGroup>
 
 </Project>
