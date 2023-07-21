@@ -52,9 +52,9 @@ namespace API.Data
                         .HasForeignKey(b => b.EmployeeGuid);
 
             //One Employee to one Education (1:1)
-            modelBuilder.Entity<Education>()
-                        .HasOne(emp => emp.Employee)
-                        .WithOne(edu => edu.Education)
+            modelBuilder.Entity<Employee>()
+                        .HasOne(emp => emp.Education)
+                        .WithOne(edu => edu.Employee)
                         .HasForeignKey<Education>(edu => edu.Guid);
 
             //One Employee to one Account (1:1)
