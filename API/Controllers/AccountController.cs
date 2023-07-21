@@ -56,6 +56,7 @@ namespace API.Controllers
         public IActionResult Update(AccountDto accountDto)
         {
             var result = _accountService.Update(accountDto);
+
             if (result is -1)
             {
                 return NotFound("Guid is not found");
