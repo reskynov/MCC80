@@ -1,90 +1,89 @@
-﻿using API.Contracts;
-using API.Models;
+﻿using API.DTOs.Universities;
+using API.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers
+namespace API.Controllers;
+
+[ApiController]
+[Route("api/univerities")]
+public class UniversityController : ControllerBase
 {
-    [ApiController]
-    [Route("api/univerities")]
-    public class UniversityController : ControllerBase
+    private readonly UniversityService _universityService;
+
+    public UniversityController(UniversityService universityService)
     {
-        private readonly IUniversityRepository _universityRepository;
+        _universityService = universityService;
+    }
 
-        public UniversityController(IUniversityRepository universityRepository)
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        var result = _universityService.GetAll();
+        if (!result.Any())
         {
-            _universityRepository = universityRepository;
+            return NotFound("No data found");
         }
 
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var result = _universityRepository.GetAll();
-            if (!result.Any())
-            {
-                return NotFound();
-            }
+        return Ok(result);
+    }
 
-            return Ok(result);
+    [HttpGet("{guid}")]
+    public IActionResult GetByGuid(Guid guid)
+    {
+        var result = _universityService.GetByGuid(guid);
+        if (result is null)
+        {
+            return NotFound("Guid is not found");
         }
 
-        [HttpGet("{guid}")]
-        public IActionResult GetByGuid(Guid guid)
-        {
-            var result = _universityRepository.GetByGuid(guid);
-            if (result is null)
-            {
-                return NotFound();
-            }
+        return Ok(result);
+    }
 
-            return Ok(result);
+    [HttpPost]
+    public IActionResult Insert(NewUniversityDto newUniversityDto)
+    {
+        var result = _universityService.Create(newUniversityDto);
+        if (result is null)
+        {
+            return StatusCode(500, "Error Retrieve from database");
         }
 
-        [HttpPost]
-        public IActionResult Insert(University university)
-        {
-            var result = _universityRepository.Create(university);
-            if (result is null)
-            {
-                return StatusCode(500, "Error Retrieve from database");
-            }
+        return Ok(result);
+    }
 
-            return Ok(result);
+    [HttpPut]
+    public IActionResult Update(UniversityDto universityDto)
+    {
+        var result = _universityService.Update(universityDto);
+
+        if (result is -1)
+        {
+            return NotFound("Guid is not found");
         }
 
-        [HttpPut]
-        public IActionResult Update(University university)
+        if (result is 0)
         {
-            var check = _universityRepository.GetByGuid(university.Guid);
-            if (check is null)
-            {
-                return NotFound("Guid is not found");
-            }
-
-            var result = _universityRepository.Update(university);
-            if (!result)
-            {
-                return StatusCode(500, "Error Retrieve from database");
-            }
-
-            return Ok("Update success");
+            return StatusCode(500, "Error Retrieve from database");
         }
 
-        [HttpDelete]
-        public IActionResult Delete(Guid guid)
+        return Ok("Update success");
+    }
+
+    [HttpDelete]
+    public IActionResult Delete(Guid guid)
+    {
+        var result = _universityService.Delete(guid);
+
+        if (result is -1)
         {
-            var data = _universityRepository.GetByGuid(guid);
-            if (data is null)
-            {
-                return NotFound("Guid is not found");
-            }
-
-            var result = _universityRepository.Delete(data);
-            if (!result)
-            {
-                return StatusCode(500, "Error Retrieve from database");
-            }
-
-            return Ok("Delete success");
+            return NotFound("Guid is not found");
         }
+
+        if (result is 0)
+        {
+            return StatusCode(500, "Error Retrieve from database");
+        }
+
+        return Ok("Delete success");
     }
 }
