@@ -26,7 +26,7 @@ builder.Services.AddScoped<RoleService>();
 builder.Services.AddScoped<RoomService>();
 builder.Services.AddScoped<AccountRoleService>();
 builder.Services.AddScoped<EmployeeService>();
-//builder.Services.AddScoped<EducationService>();
+builder.Services.AddScoped<EducationService>();
 //builder.Services.AddScoped<BookingService>();
 //builder.Services.AddScoped<AccountService>();
 
