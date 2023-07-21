@@ -14,11 +14,11 @@ builder.Services.AddDbContext<BookingDbContext>(option => option.UseSqlServer(co
 builder.Services.AddScoped<IUniversityRepository, UniversityRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
-builder.Services.AddScoped<IAccountRoleRepository, AccountRoleRepository>();
-builder.Services.AddScoped<IEducationRepository, EducationRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IAccountRoleRepository, AccountRoleRepository>();
+builder.Services.AddScoped<IEducationRepository, EducationRepository>();
 
 // Add services to the container.
 builder.Services.AddScoped<UniversityService>();

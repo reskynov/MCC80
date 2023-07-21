@@ -7,12 +7,12 @@ namespace API.DTOs.Roles
         public Guid Guid { get; set; }
         public string Name { get; set; }
 
-        public static implicit operator Role(RoleDto newRoleDto)
+        public static implicit operator Role(RoleDto roleDto)
         {
             return new Role
             {
-                Guid = newRoleDto.Guid,
-                Name = newRoleDto.Name,
+                Guid = roleDto.Guid,
+                Name = roleDto.Name,
                 ModifiedDate = DateTime.Now
             };
         }
