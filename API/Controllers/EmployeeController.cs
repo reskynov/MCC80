@@ -1,5 +1,7 @@
 ﻿using API.Contracts;
+using API.DTOs.Employees;
 using API.Models;
+using API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -8,20 +10,20 @@ namespace API.Controllers
     [Route("api/employees")]
     public class EmployeeController : Controller
     {
-        private readonly IEmployeeRepository _employeeRepository;
+        private readonly EmployeeService _employeeService;
 
-        public EmployeeController(IEmployeeRepository employeeRepository)
+        public EmployeeController(EmployeeService employeeService)
         {
-            _employeeRepository = employeeRepository;
+            _employeeService = employeeService;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            var result = _employeeRepository.GetAll();
+            var result = _employeeService.GetAll();
             if (!result.Any())
             {
-                return NotFound();
+                return NotFound("no data found");
             }
 
             return Ok(result);
@@ -30,19 +32,19 @@ namespace API.Controllers
         [HttpGet("{guid}")]
         public IActionResult GetByGuid(Guid guid)
         {
-            var result = _employeeRepository.GetByGuid(guid);
+            var result = _employeeService.GetByGuid(guid);
             if (result is null)
             {
-                return NotFound();
+                return NotFound("no data found");
             }
 
             return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult Insert(Employee employee)
+        public IActionResult Insert(NewEmployeeDto newEmployeeDto)
         {
-            var result = _employeeRepository.Create(employee);
+            var result = _employeeService.Create(newEmployeeDto);
             if (result is null)
             {
                 return StatusCode(500, "Error Retrieve from database");
@@ -52,16 +54,15 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update(Employee employee)
+        public IActionResult Update(EmployeeDto employeeDto)
         {
-            var check = _employeeRepository.GetByGuid(employee.Guid);
-            if (check is null)
+            var result = _employeeService.Update(employeeDto);
+            if (result is -1)
             {
                 return NotFound("Guid is not found");
             }
 
-            var result = _employeeRepository.Update(employee);
-            if (!result)
+            if (result is 0)
             {
                 return StatusCode(500, "Error Retrieve from database");
             }
@@ -72,19 +73,18 @@ namespace API.Controllers
         [HttpDelete]
         public IActionResult Delete(Guid guid)
         {
-            var data = _employeeRepository.GetByGuid(guid);
-            if (data is null)
+            var result = _employeeService.Delete(guid);
+            if (result is -1)
             {
                 return NotFound("Guid is not found");
             }
 
-            var result = _employeeRepository.Delete(data);
-            if (!result)
+            if (result is 0)
             {
                 return StatusCode(500, "Error Retrieve from database");
             }
 
-            return Ok("Delete success");
+            return Ok("Update success");
         }
     }
 }
