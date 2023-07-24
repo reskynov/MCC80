@@ -15,6 +15,7 @@ namespace API.DTOs.Employees
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
 
+        //konversi secara langsung
         public static implicit operator Employee(EmployeeDto EmployeeDto)
         {
             return new Employee
@@ -32,6 +33,7 @@ namespace API.DTOs.Employees
             };
         }
 
+        //konversi dengan casting
         public static explicit operator EmployeeDto(Employee employee)
         {
             return new EmployeeDto

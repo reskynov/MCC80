@@ -6,6 +6,7 @@ namespace API.DTOs.Accounts
     public class NewAccountDto
     {
         public Guid Guid { get; set; }
+        public string Password { get; set; }
         public int OTP { get; set; }
         public bool IsUsed { get; set; }
         public DateTime ExpiredTime { get; set; }
@@ -15,6 +16,7 @@ namespace API.DTOs.Accounts
             return new Account
             {
                 Guid = newAccountDto.Guid,
+                Password = newAccountDto.Password,
                 OTP = newAccountDto.OTP,
                 IsUsed = newAccountDto.IsUsed,
                 ExpiredDate = newAccountDto.ExpiredTime,

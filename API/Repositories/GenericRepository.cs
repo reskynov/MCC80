@@ -7,7 +7,7 @@ namespace API.Repositories
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        private readonly BookingDbContext _context;
+        protected readonly BookingDbContext _context;
 
         public GenericRepository(BookingDbContext context)
         {
