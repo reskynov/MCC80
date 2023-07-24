@@ -11,9 +11,6 @@ namespace API.Utilities.Validations.Employees
         {
             _employeeRepository = employeeRepository;
 
-            RuleFor(e => e.NIK)
-                .NotEmpty();
-
             RuleFor(e => e.FirstName)
                 .NotEmpty();
 

@@ -2,6 +2,7 @@
 using API.DTOs.Employees;
 using API.Models;
 using API.Repositories;
+using API.Utilities.Handlers;
 
 namespace API.Services
 {
@@ -42,15 +43,18 @@ namespace API.Services
             return (EmployeeDto)employeeDto;
         }
 
-        public EmployeeDto? Create(NewEmployeeDto newemployeeDto)
+        public EmployeeDto? Create(NewEmployeeDto newEmployeeDto)
         {
-            var employeeDto = _employeeRepository.Create(newemployeeDto);
-            if (employeeDto is null)
+            Employee employeeToCreate = newEmployeeDto;
+            employeeToCreate.NIK = GenerateHandler.Nik(_employeeRepository.GetLastNik());
+
+            var employee = _employeeRepository.Create(employeeToCreate);
+            if (employeeToCreate is null)
             {
                 return null;
             }
-
-            return (EmployeeDto)employeeDto;
+            
+            return (EmployeeDto) employeeToCreate;
         }
 
         public int Update(EmployeeDto employeeDto)
