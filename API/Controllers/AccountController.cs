@@ -2,6 +2,9 @@
 using API.Models;
 using Microsoft.AspNetCore.Mvc;
 using API.DTOs.Accounts;
+using API.DTOs.Universities;
+using API.Utilities.Handlers;
+using System.Net;
 
 namespace API.Controllers
 {
@@ -22,10 +25,21 @@ namespace API.Controllers
             var result = _accountService.GetAll();
             if (!result.Any())
             {
-                return NotFound("no data found");
+                return NotFound(new ResponseHandler<AccountDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "data not found"
+                });
             }
 
-            return Ok(result);
+            return Ok(new ResponseHandler<IEnumerable<AccountDto>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data",
+                Data = result
+            });
         }
 
         [HttpGet("{guid}")]
@@ -34,10 +48,21 @@ namespace API.Controllers
             var result = _accountService.GetByGuid(guid);
             if (result is null)
             {
-                return NotFound("no data found");
+                return NotFound(new ResponseHandler<AccountDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "data not found"
+                });
             }
 
-            return Ok(result);
+            return Ok(new ResponseHandler<AccountDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data",
+                Data = result
+            });
         }
 
         [HttpPost]
@@ -46,10 +71,21 @@ namespace API.Controllers
             var result = _accountService.Create(newAccountDto);
             if (result is null)
             {
-                return StatusCode(500, "Error Retrieve from database");
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<AccountDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "Internal server error"
+                });
             }
 
-            return Ok(result);
+            return Ok(new ResponseHandler<AccountDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data",
+                Data = result
+            });
         }
 
         [HttpPut]
@@ -59,15 +95,30 @@ namespace API.Controllers
 
             if (result is -1)
             {
-                return NotFound("Guid is not found");
+                return NotFound(new ResponseHandler<AccountDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "data not found"
+                });
             }
 
             if (result is 0)
             {
-                return StatusCode(500, "Error Retrieve from database");
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<AccountDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "Internal server error"
+                });
             }
 
-            return Ok("Update success");
+            return Ok(new ResponseHandler<AccountDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data"
+            });
         }
 
         [HttpDelete]
@@ -77,15 +128,30 @@ namespace API.Controllers
 
             if (result is -1)
             {
-                return NotFound("Guid is not found");
+                return NotFound(new ResponseHandler<AccountDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "data not found"
+                });
             }
 
             if (result is 0)
             {
-                return StatusCode(500, "Error Retrieve from database");
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<AccountDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "Internal server error"
+                });
             }
 
-            return Ok("Update success");
+            return Ok(new ResponseHandler<AccountDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data"
+            });
         }
     }
 }

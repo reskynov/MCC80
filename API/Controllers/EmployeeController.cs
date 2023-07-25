@@ -1,8 +1,11 @@
 ﻿using API.Contracts;
+using API.DTOs.Educations;
 using API.DTOs.Employees;
 using API.Models;
 using API.Services;
+using API.Utilities.Handlers;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace API.Controllers
 {
@@ -23,10 +26,20 @@ namespace API.Controllers
             var result = _employeeService.GetAll();
             if (!result.Any())
             {
-                return NotFound("no data found");
+                return NotFound(new ResponseHandler<EmployeeDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "data not found"
+                });
             }
 
-            return Ok(result);
+            return Ok(new ResponseHandler<EmployeeDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data"
+            });
         }
 
         [HttpGet("{guid}")]
@@ -35,10 +48,20 @@ namespace API.Controllers
             var result = _employeeService.GetByGuid(guid);
             if (result is null)
             {
-                return NotFound("no data found");
+                return NotFound(new ResponseHandler<EmployeeDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "guid not found"
+                });
             }
 
-            return Ok(result);
+            return Ok(new ResponseHandler<EmployeeDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data"
+            });
         }
 
         [HttpPost]
@@ -47,44 +70,86 @@ namespace API.Controllers
             var result = _employeeService.Create(newEmployeeDto);
             if (result is null)
             {
-                return StatusCode(500, "Error Retrieve from database");
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<EmployeeDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "Internal server error"
+                });
             }
 
-            return Ok(result);
+            return Ok(new ResponseHandler<EmployeeDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data"
+            });
         }
 
         [HttpPut]
         public IActionResult Update(EmployeeDto employeeDto)
         {
             var result = _employeeService.Update(employeeDto);
+
             if (result is -1)
             {
-                return NotFound("Guid is not found");
+                return NotFound(new ResponseHandler<EmployeeDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "data not found"
+                });
             }
 
             if (result is 0)
             {
-                return StatusCode(500, "Error Retrieve from database");
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<EmployeeDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "Internal server error"
+                });
             }
 
-            return Ok("Update success");
+            return Ok(new ResponseHandler<EmployeeDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data"
+            });
         }
 
         [HttpDelete]
         public IActionResult Delete(Guid guid)
         {
             var result = _employeeService.Delete(guid);
+
             if (result is -1)
             {
-                return NotFound("Guid is not found");
+                return NotFound(new ResponseHandler<EmployeeDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "data not found"
+                });
             }
 
             if (result is 0)
             {
-                return StatusCode(500, "Error Retrieve from database");
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<EmployeeDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "Internal server error"
+                });
             }
 
-            return Ok("Update success");
+            return Ok(new ResponseHandler<EmployeeDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data"
+            });
         }
     }
 }

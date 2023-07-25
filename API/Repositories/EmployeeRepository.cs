@@ -12,16 +12,19 @@ namespace API.Repositories
         {
         }
 
+        //check if email or phone number in database
         public bool isNotExist(string value)
         {
+            //return true if null
             return _context.Set<Employee>()
                            .SingleOrDefault(e => e.Email.Contains(value)
                                                || e.PhoneNumber.Contains(value)) is null;
         }
 
+        //get the last NIK of employee
         public string GetLastNik()
         {
-            return _context.Set<Employee>().ToList().Last()?.NIK;
+            return _context.Set<Employee>().ToList().LastOrDefault()?.NIK;
         }
     }
 }

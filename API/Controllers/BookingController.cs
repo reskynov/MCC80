@@ -3,6 +3,9 @@ using API.Models;
 using API.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using API.DTOs.Bookings;
+using API.DTOs.AccountRoles;
+using API.Utilities.Handlers;
+using System.Net;
 
 namespace API.Controllers
 {
@@ -23,10 +26,20 @@ namespace API.Controllers
             var result = _bookingService.GetAll();
             if (!result.Any())
             {
-                return NotFound("no data found");
+                return NotFound(new ResponseHandler<BookingDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "data not found"
+                });
             }
 
-            return Ok(result);
+            return Ok(new ResponseHandler<BookingDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data"
+            });
         }
 
         [HttpGet("{guid}")]
@@ -35,10 +48,20 @@ namespace API.Controllers
             var result = _bookingService.GetByGuid(guid);
             if (result is null)
             {
-                return NotFound("no data found");
+                return NotFound(new ResponseHandler<BookingDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "guid not found"
+                });
             }
 
-            return Ok(result);
+            return Ok(new ResponseHandler<BookingDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data"
+            });
         }
 
         [HttpPost]
@@ -47,10 +70,20 @@ namespace API.Controllers
             var result = _bookingService.Create(newBookingDto);
             if (result is null)
             {
-                return StatusCode(500, "Error Retrieve from database");
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<BookingDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "Internal server error"
+                });
             }
 
-            return Ok(result);
+            return Ok(new ResponseHandler<BookingDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data"
+            });
         }
 
         [HttpPut]
@@ -60,15 +93,30 @@ namespace API.Controllers
 
             if (result is -1)
             {
-                return NotFound("Guid is not found");
+                return NotFound(new ResponseHandler<BookingDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "data not found"
+                });
             }
 
             if (result is 0)
             {
-                return StatusCode(500, "Error Retrieve from database");
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<BookingDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "Internal server error"
+                });
             }
 
-            return Ok("Update success");
+            return Ok(new ResponseHandler<BookingDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data"
+            });
         }
 
         [HttpDelete]
@@ -78,15 +126,30 @@ namespace API.Controllers
 
             if (result is -1)
             {
-                return NotFound("Guid is not found");
+                return NotFound(new ResponseHandler<BookingDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "data not found"
+                });
             }
 
             if (result is 0)
             {
-                return StatusCode(500, "Error Retrieve from database");
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<BookingDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "Internal server error"
+                });
             }
 
-            return Ok("Update success");
+            return Ok(new ResponseHandler<BookingDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Success retrieve data"
+            });
         }
     }
 }
