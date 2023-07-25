@@ -16,7 +16,7 @@ namespace API.Utilities.Validations.Employees
 
             RuleFor(e => e.BirthDate)
                 .NotEmpty()
-                .LessThanOrEqualTo(DateTime.Now.AddYears(-10));
+                .LessThanOrEqualTo(DateTime.Now.AddYears(-20));
 
             RuleFor(e => e.Gender)
                 .NotNull()

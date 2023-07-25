@@ -21,7 +21,7 @@ namespace API.Repositories
 
         public string GetLastNik()
         {
-            return _context.Set<Employee>().ToList().LastOrDefault()?.NIK;
+            return _context.Set<Employee>().ToList().Last()?.NIK;
         }
     }
 }
