@@ -35,11 +35,12 @@ namespace API.Controllers
                 });
             }
 
-            return Ok(new ResponseHandler<RoomDto>
+            return Ok(new ResponseHandler<IEnumerable<RoomDto>>
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
-                Message = "Success retrieve data"
+                Message = "Success retrieve data",
+                Data = result
             });
         }
 
@@ -61,7 +62,8 @@ namespace API.Controllers
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
-                Message = "Success retrieve data"
+                Message = "Success retrieve data",
+                Data = result
             });
         }
 
@@ -83,7 +85,8 @@ namespace API.Controllers
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
-                Message = "Success retrieve data"
+                Message = "Success retrieve data",
+                Data = result
             });
         }
 
