@@ -16,6 +16,8 @@ namespace API.DTOs.Employees
 
         public static implicit operator Employee(NewEmployeeDto newEmployeeDto)
         {
+
+
             return new Employee
             {
                 Guid = Guid.NewGuid(),

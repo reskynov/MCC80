@@ -1,5 +1,6 @@
 ﻿using API.DTOs.Employees;
 using API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Contracts
 {
@@ -7,5 +8,8 @@ namespace API.Contracts
     {
         bool isNotExist(string value);
         string GetLastNik();
+        Employee? GetByEmail(string email);
+        Guid GetLastEmployeeGuid();
+        
     }
 }

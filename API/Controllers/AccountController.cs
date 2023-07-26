@@ -153,5 +153,52 @@ namespace API.Controllers
                 Message = "Success retrieve data"
             });
         }
+
+        [HttpPost("login")]
+        public IActionResult Login(LoginDto loginDto)
+        {
+            var result = _accountService.Login(loginDto);
+
+            if (result is 0)
+            {
+                return NotFound(new ResponseHandler<LoginDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Email or Password is incorrect"
+                });
+            }
+
+            return Ok(new ResponseHandler<LoginDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Login Success"
+            });
+        }
+
+        [HttpPost("register")]
+        public IActionResult Register(RegisterDto registerDto)
+        {
+            var result = _accountService.Register(registerDto);
+
+            if (result is null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<AccountDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "Error occurred when registering"
+                });
+            }
+
+            return Ok(new ResponseHandler<RegisterDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Register Success",
+                Data = result
+            });
+        }
     }
 }
