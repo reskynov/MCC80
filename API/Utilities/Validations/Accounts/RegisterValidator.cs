@@ -56,9 +56,13 @@ namespace API.Utilities.Validations.Accounts
                 .NotEmpty();
 
             //Account Data
-            RuleFor(a => a.Password)
+            RuleFor(pass => pass.Password)
                 .NotEmpty()
                 .Matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
+
+            RuleFor(pass => pass.ConfirmPassword)
+                .Equal(pass => pass.Password)
+                .WithMessage("Passwords do not match");
         }
 
         private bool IsDuplicateValue(string value)
