@@ -205,7 +205,7 @@ namespace API.Controllers
         [HttpGet("free-rooms-today")]
         public IActionResult FreeRoomsToday()
         {
-            var result = _bookingService.FreeRoomsToday();
+            var result = _bookingService.GetFreeRoomsToday();
             if (result is null)
             {
                 return NotFound(new ResponseHandler<RoomDto>
@@ -225,7 +225,7 @@ namespace API.Controllers
             });
         }
 
-        [HttpGet("booking-time-length")]
+        [HttpGet("booked-time-length")]
         public IActionResult BookingLength()
         {
             var result = _bookingService.BookingLength();

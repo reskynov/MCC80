@@ -91,78 +91,41 @@ namespace API.Services
 
         public IEnumerable<DetailBookingDto> GetAllDetailBooking()
         {
-            var bookings = _bookingRepository.GetAll();
-            if (!bookings.Any())
+            var bookingsDetail = (from booking in _bookingRepository.GetAll()
+                            join employee in _employeeRepository.GetAll() on booking.EmployeeGuid equals employee.Guid
+                            join room in _roomRepository.GetAll() on booking.RoomGuid equals room.Guid
+                            select new DetailBookingDto
+                            {
+                                BookingGuid = booking.Guid,
+                                BookingNIK = employee.NIK,
+                                BookingBy = employee.FirstName + " " + employee.LastName,
+                                RoomName = room.Name,
+                                StartDate = booking.StartDate,
+                                EndDate = booking.EndDate,
+                                Remark = booking.Remark,
+                                Status = booking.Status
+                            });
+
+            if (!bookingsDetail.Any() || bookingsDetail is null )
             {
-                
+                return Enumerable.Empty<DetailBookingDto>();
             }
 
-            var detailBookingDtos = new List<DetailBookingDto>();
-            foreach (var booking in bookings)
-            {
-                var employee = _employeeRepository.GetByGuid(booking.EmployeeGuid);
-                if (employee is null)
-                {
-                    return Enumerable.Empty<DetailBookingDto>();
-                }
-
-                var room = _roomRepository.GetByGuid(booking.RoomGuid);
-                if (room is null)
-                {
-                    return Enumerable.Empty<DetailBookingDto>();
-                }
-
-                var detailBooking = new DetailBookingDto
-                {
-                    BookingGuid = booking.Guid,
-                    BookingNIK = employee.NIK,
-                    BookingBy = employee.FirstName + " " + employee.LastName,
-                    RoomName = room.Name,
-                    StartDate = booking.StartDate,
-                    EndDate = booking.EndDate,
-                    Remark = booking.Remark,
-                    Status = booking.Status
-                };
-                detailBookingDtos.Add(detailBooking);
-            }
-
-            return detailBookingDtos; // booking is found;
+            return bookingsDetail; // booking is found;
         }
 
         public DetailBookingDto? GetDetailBookingByGuid(Guid guid)
         {
-            var booking = _bookingRepository.GetByGuid(guid);
-            if (booking is null)
+            var result = GetAllDetailBooking().Where(booking => booking.BookingGuid == guid).SingleOrDefault();
+            if (result is null)
             {
                 return null;
             }
-
-            var employee = _employeeRepository.GetByGuid(booking.EmployeeGuid);
-            if (employee is null)
-            {
-                return null;
-            }
-
-            var room = _roomRepository.GetByGuid(booking.RoomGuid);
-            if (room is null)
-            {
-                return null;
-            }
-
-            return new DetailBookingDto
-            {
-                BookingGuid = booking.Guid,
-                BookingNIK = employee.NIK,
-                BookingBy = employee.FirstName + " " + employee.LastName,
-                RoomName = room.Name,
-                StartDate = booking.StartDate,
-                EndDate = booking.EndDate,
-                Remark = booking.Remark,
-                Status = booking.Status
-            };// booking is found;
+            return result;
+            // booking is found;
         }
 
-        public IEnumerable<RoomDto> FreeRoomsToday()
+        public IEnumerable<RoomDto> GetFreeRoomsToday()
         {
             List<RoomDto> roomDtos = new List<RoomDto>();
             var bookings = GetAll();
