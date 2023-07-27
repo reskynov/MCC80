@@ -22,19 +22,26 @@ namespace API.Repositories
         }
 
         //get the last NIK of employee
-        public string GetLastNik()
+        public string? GetLastNik()
         {
-            return _context.Set<Employee>().ToList().LastOrDefault()?.NIK;
+            return _context.Set<Employee>().ToList().OrderBy(emp => emp.NIK).LastOrDefault()?.NIK;
         }
 
+        //get employee by email
         public Employee? GetByEmail(string email)
         {
             return _context.Set<Employee>().SingleOrDefault(e => e.Email.Contains(email));
         }
 
+        //get last employee guid
         public Guid GetLastEmployeeGuid()
         {
             return _context.Set<Employee>().ToList().LastOrDefault().Guid;
+        }
+
+        public Employee? CheckEmail(string email)
+        {
+            return _context.Set<Employee>().FirstOrDefault(e => e.Email == email);
         }
     }
 }

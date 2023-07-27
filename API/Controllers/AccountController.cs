@@ -200,5 +200,90 @@ namespace API.Controllers
                 Data = result
             });
         }
+
+        [HttpPost("forgot-password")]
+        public IActionResult ForgotPassword(ForgotPasswordDto forgotPasswordDto)
+        {
+            var isUpdated = _accountService.ForgotPassword(forgotPasswordDto);
+            if(isUpdated == 0)
+            {
+                return NotFound(new ResponseHandler<ForgotPasswordDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Email not found"
+                });
+            }
+
+            if(isUpdated == -1)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<AccountDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "Error retrieving data from the database"
+                });
+            }
+
+            return Ok(new ResponseHandler<ForgotPasswordDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "otp has been sent to your email",
+                Data = forgotPasswordDto
+            });
+        }
+
+        [HttpPost("change-password")]
+        public IActionResult ChangePassword(ChangePasswordDto changePasswordDto)
+        {
+            var update = _accountService.ChangePassword(changePasswordDto);
+            if (update == -1)
+            {
+                return NotFound(new ResponseHandler<ChangePasswordDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Email not found"
+                });
+            }
+
+            if (update == 0)
+            {
+                return NotFound(new ResponseHandler<ChangePasswordDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "OTP does not match"
+                });
+            }
+
+            if (update == 1)
+            {
+                return NotFound(new ResponseHandler<ChangePasswordDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "OTP Is Used"
+                });
+            }
+
+            if (update == 2)
+            {
+                return NotFound(new ResponseHandler<ChangePasswordDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "OTP already expired"
+                });
+            }
+
+            return Ok(new ResponseHandler<ChangePasswordDto>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Succesfully updated new password"
+            });
+        }
     }
 }
