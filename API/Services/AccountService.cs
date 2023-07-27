@@ -105,17 +105,19 @@ namespace API.Services
             {
                 //Check University Code from Database
                 var existingUniversity = _universityRepository.GetUniversityByCode(registerDto.UniversityCode);
-                var universityToCreate = new NewUniversityDto();
+                var universityToCreate = new University();
 
                 if (existingUniversity is null)
                 {
+                    universityToCreate.Guid = Guid.NewGuid();
                     universityToCreate.Code = registerDto.UniversityCode;
                     universityToCreate.Name = registerDto.UniversityName;
+                    universityToCreate.CreatedDate = DateTime.Now;
+                    universityToCreate.ModifiedDate = DateTime.Now;
                 }
                 else
                 {
-                    universityToCreate.Code = existingUniversity.Code;
-                    universityToCreate.Name = existingUniversity.Name;
+                    universityToCreate = existingUniversity;
                 }
                 //University Create
                 var universityResult = _universityRepository.Create(universityToCreate);
