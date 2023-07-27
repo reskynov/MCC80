@@ -1,5 +1,6 @@
 ﻿using API.Contracts;
 using API.DTOs.Employees;
+using API.DTOs.Rooms;
 using API.Models;
 using API.Repositories;
 using API.Utilities.Handlers;
@@ -106,7 +107,16 @@ namespace API.Services
             foreach (var emp in employees)
             {
                 var education = _educationRepository.GetByGuid(emp.Guid);
+                if (education is null)
+                {
+                    return Enumerable.Empty<EmployeeDetailDto>();
+                }
+
                 var university = _universityRepository.GetByGuid(education.UniversityGuid);
+                if (university is null)
+                {
+                    return Enumerable.Empty<EmployeeDetailDto>();
+                }
 
                 EmployeeDetailDto employeeDetail = new EmployeeDetailDto
                 {
@@ -139,7 +149,16 @@ namespace API.Services
                 return null;
             }
             var education = _educationRepository.GetByGuid(employee.Guid);
+            if (education is null)
+            {
+                return null;
+            }
+
             var university = _universityRepository.GetByGuid(education.UniversityGuid);
+            if (university is null)
+            {
+                return null;
+            }
 
             return new EmployeeDetailDto
             {

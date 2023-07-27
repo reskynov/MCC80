@@ -108,11 +108,22 @@ namespace API.Services
             employeeToCreate.NIK = GenerateHandler.Nik(_employeeRepository.GetLastNik());
             var employeeResult = _employeeRepository.Create(employeeToCreate);
 
-            var universityResult = _universityRepository.Create(new NewUniversityDto
+            var existingUniversity = _universityRepository.GetUniversityByCode(registerDto.UniversityCode);
+
+            var universityToCreate = new NewUniversityDto();
+
+            if (existingUniversity is null)
             {
-                Code = registerDto.UniversityCode,
-                Name = registerDto.UniversityName
-            });
+                universityToCreate.Code = registerDto.UniversityCode;
+                universityToCreate.Name = registerDto.UniversityName;
+            }
+            else
+            {
+                universityToCreate.Code = existingUniversity.Code;
+                universityToCreate.Name = existingUniversity.Name;
+            }
+
+            var universityResult = _universityRepository.Create(universityToCreate);
 
             var educationResult = _educationRepository.Create(new NewEducationDto
             {

@@ -102,7 +102,16 @@ namespace API.Services
             foreach (var booking in bookings)
             {
                 var employee = _employeeRepository.GetByGuid(booking.EmployeeGuid);
+                if (employee is null)
+                {
+                    return Enumerable.Empty<BookedRoomTodayDto>();
+                }
+
                 var room = _roomRepository.GetByGuid(booking.RoomGuid);
+                if (room is null)
+                {
+                    return Enumerable.Empty<BookedRoomTodayDto>();
+                }
 
                 BookedRoomTodayDto bookedRoom = new BookedRoomTodayDto
                 {
