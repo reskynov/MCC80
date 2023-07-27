@@ -156,7 +156,7 @@ namespace API.Controllers
             });
         }
 
-        [HttpGet("booked-room-today")]
+        [HttpGet("booked-today")]
         public IActionResult GetBookedRoomToday()
         {
             var result = _roomService.GetAllBookedRoomToday();

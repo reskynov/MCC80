@@ -89,42 +89,26 @@ namespace API.Services
         public IEnumerable<BookedRoomTodayDto> GetAllBookedRoomToday()
         {
             var today = DateTime.Today.ToString("dd-MM-yyyy");
-            var bookings = _bookingRepository.GetAll()
-                            .Where(b => b.StartDate.ToString("dd-MM-yyyy").Equals(today));
+            var bookedRoomsToday = (from booking in _bookingRepository.GetAll()
+                            join employee in _employeeRepository.GetAll() on booking.EmployeeGuid equals employee.Guid
+                            join room in _roomRepository.GetAll() on booking.RoomGuid equals room.Guid
+                            where booking.StartDate.ToString("dd-MM-yyyy") == today
+                            select new BookedRoomTodayDto
+                            {
+                                BookingGuid = booking.Guid,
+                                RoomName = room.Name,
+                                Status = booking.Status,
+                                Floor = room.Floor,
+                                BookedBy = employee.FirstName + " " + employee.LastName
+                            });
 
-            if (!bookings.Any())
+
+            if (!bookedRoomsToday.Any() || bookedRoomsToday is null)
             {
                 return Enumerable.Empty<BookedRoomTodayDto>();
             }
 
-            var bookedRoomTodayDtos = new List<BookedRoomTodayDto>();
-
-            foreach (var booking in bookings)
-            {
-                var employee = _employeeRepository.GetByGuid(booking.EmployeeGuid);
-                if (employee is null)
-                {
-                    return Enumerable.Empty<BookedRoomTodayDto>();
-                }
-
-                var room = _roomRepository.GetByGuid(booking.RoomGuid);
-                if (room is null)
-                {
-                    return Enumerable.Empty<BookedRoomTodayDto>();
-                }
-
-                BookedRoomTodayDto bookedRoom = new BookedRoomTodayDto
-                {
-                    BookingGuid = booking.Guid,
-                    RoomName = room.Name,
-                    Status = booking.Status,
-                    Floor = room.Floor,
-                    BookedBy = employee.FirstName +" "+employee.LastName
-                };
-                bookedRoomTodayDtos.Add(bookedRoom);
-            }
-
-            return bookedRoomTodayDtos; // room is found;
+            return bookedRoomsToday; // room is found;
         }
     }
 }
