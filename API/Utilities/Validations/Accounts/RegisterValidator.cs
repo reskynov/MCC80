@@ -53,8 +53,8 @@ namespace API.Utilities.Validations.Accounts
                 .NotEmpty();
 
             RuleFor(e => e.GPA)
-                .LessThanOrEqualTo(0)
-                .GreaterThanOrEqualTo(4)
+                .LessThanOrEqualTo(4)
+                .GreaterThanOrEqualTo(0)
                 .NotEmpty();
 
             //Account Data

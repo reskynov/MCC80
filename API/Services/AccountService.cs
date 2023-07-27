@@ -98,56 +98,67 @@ namespace API.Services
 
         public RegisterDto? Register(RegisterDto registerDto)
         {
-            Employee employeeToCreate = new NewEmployeeDto
+            //anticipation If error do rollback
+            using var transaction = _dbContext.Database.BeginTransaction();
+
+            try
             {
-                FirstName = registerDto.FirstName,
-                LastName = registerDto.LastName,
-                BirthDate = registerDto.BirthDate,
-                Gender = registerDto.Gender,
-                HiringDate = registerDto.HiringDate,
-                Email = registerDto.Email,
-                PhoneNumber = registerDto.PhoneNumber
-            };
-            employeeToCreate.NIK = GenerateHandler.Nik(_employeeRepository.GetLastNik());
-            var employeeResult = _employeeRepository.Create(employeeToCreate);
+                //Check University Code from Database
+                var existingUniversity = _universityRepository.GetUniversityByCode(registerDto.UniversityCode);
+                var universityToCreate = new NewUniversityDto();
 
-            var existingUniversity = _universityRepository.GetUniversityByCode(registerDto.UniversityCode);
+                if (existingUniversity is null)
+                {
+                    universityToCreate.Code = registerDto.UniversityCode;
+                    universityToCreate.Name = registerDto.UniversityName;
+                }
+                else
+                {
+                    universityToCreate.Code = existingUniversity.Code;
+                    universityToCreate.Name = existingUniversity.Name;
+                }
+                //University Create
+                var universityResult = _universityRepository.Create(universityToCreate);
 
-            var universityToCreate = new NewUniversityDto();
+                //Employee Create
+                Employee employeeToCreate = new NewEmployeeDto
+                {
+                    FirstName = registerDto.FirstName,
+                    LastName = registerDto.LastName,
+                    BirthDate = registerDto.BirthDate,
+                    Gender = registerDto.Gender,
+                    HiringDate = registerDto.HiringDate,
+                    Email = registerDto.Email,
+                    PhoneNumber = registerDto.PhoneNumber
+                };
+                employeeToCreate.NIK = GenerateHandler.Nik(_employeeRepository.GetLastNik());
+                var employeeResult = _employeeRepository.Create(employeeToCreate);
 
-            if (existingUniversity is null)
-            {
-                universityToCreate.Code = registerDto.UniversityCode;
-                universityToCreate.Name = registerDto.UniversityName;
+                //Education Create
+                var educationResult = _educationRepository.Create(new NewEducationDto
+                {
+                    Guid = employeeToCreate.Guid,
+                    Degree = registerDto.Degree,
+                    Major = registerDto.Major,
+                    GPA = registerDto.GPA,
+                    UniversityGuid = universityResult.Guid
+                });
+
+                //Account Create
+                var accountResult = _accountRepository.Create(new NewAccountDto
+                {
+                    Guid = employeeToCreate.Guid,
+                    IsUsed = true,
+                    ExpiredTime = DateTime.Now.AddYears(3),
+                    OTP = 111,
+                    Password = registerDto.Password,
+                });
+
+                transaction.Commit();
             }
-            else
+            catch
             {
-                universityToCreate.Code = existingUniversity.Code;
-                universityToCreate.Name = existingUniversity.Name;
-            }
-
-            var universityResult = _universityRepository.Create(universityToCreate);
-
-            var educationResult = _educationRepository.Create(new NewEducationDto
-            {
-                Guid = employeeToCreate.Guid,
-                Degree = registerDto.Degree,
-                Major = registerDto.Major,
-                GPA = registerDto.GPA,
-                UniversityGuid = universityResult.Guid
-            });
-
-            var accountResult = _accountRepository.Create(new NewAccountDto
-            {
-                Guid = employeeToCreate.Guid,
-                IsUsed = true,
-                ExpiredTime = DateTime.Now.AddYears(3),
-                OTP = 111,
-                Password = registerDto.Password,
-            });
-
-            if (employeeResult is null || universityResult is null || educationResult is null || accountResult is null)
-            {
+                transaction.Rollback();
                 return null;
             }
 

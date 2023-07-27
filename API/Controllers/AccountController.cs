@@ -195,8 +195,7 @@ namespace API.Controllers
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
-                Message = "Register Success",
-                Data = result
+                Message = "Register Success"
             });
         }
 
