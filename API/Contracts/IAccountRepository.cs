@@ -5,4 +5,6 @@ namespace API.Contracts
     public interface IAccountRepository : IGenericRepository<Account>
     {
     }
+
+    
 }

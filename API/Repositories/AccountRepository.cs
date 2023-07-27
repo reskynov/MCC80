@@ -9,5 +9,7 @@ namespace API.Repositories
         public AccountRepository(BookingDbContext context) : base(context)
         {
         }
+
+        
     }
 }

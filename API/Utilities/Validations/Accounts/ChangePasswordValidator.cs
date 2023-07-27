@@ -13,6 +13,7 @@ namespace API.Utilities.Validations.Accounts
             _employeeRepository = employeeRepository;
 
             RuleFor(register => register.Email)
+                .EmailAddress()
                 .NotEmpty().WithMessage("Email is required");
 
             RuleFor(account => account.OTP)

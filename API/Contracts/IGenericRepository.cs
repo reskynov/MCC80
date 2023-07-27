@@ -10,5 +10,6 @@ namespace API.Contracts
         TEntity? Create(TEntity obj);
         bool Update(TEntity obj);
         bool Delete(TEntity obj);
+        void Clear();
     }
 }

@@ -72,5 +72,10 @@ namespace API.Repositories
                 return false;
             }
         }
+
+        public void Clear()
+        {
+            _context.ChangeTracker.Clear();
+        }
     }
 }
