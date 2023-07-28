@@ -60,7 +60,8 @@ namespace API.Controllers
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
-                Message = "Success retrieve data"
+                Message = "Success retrieve data",
+                Data = result
             });
         }
 
@@ -149,7 +150,7 @@ namespace API.Controllers
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
-                Message = "Success retrieve data"
+                Message = "Success delete data"
             });
         }
 
@@ -203,7 +204,7 @@ namespace API.Controllers
         public IActionResult ForgotPassword(ForgotPasswordDto forgotPasswordDto)
         {
             var isUpdated = _accountService.ForgotPassword(forgotPasswordDto);
-            if(isUpdated == 0)
+            if (isUpdated == 0)
             {
                 return NotFound(new ResponseHandler<ForgotPasswordDto>
                 {
@@ -213,7 +214,7 @@ namespace API.Controllers
                 });
             }
 
-            if(isUpdated == -1)
+            if (isUpdated == -1)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<AccountDto>
                 {
@@ -227,7 +228,7 @@ namespace API.Controllers
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
-                Message = "otp has been sent to your email"
+                Message = "OTP has been sent to your email"
             });
         }
 
@@ -292,5 +293,29 @@ namespace API.Controllers
                 Message = "Succesfully updated new password"
             });
         }
+
+        //[HttpPost("hash-all-password")]
+        //public IActionResult HashAllPassword()
+        //{
+        //    var result = _accountService.HashAllPassword();
+        //    if (result is -1)
+        //    {
+        //        return NotFound(new ResponseHandler<AccountDto>
+        //        {
+        //            Code = StatusCodes.Status404NotFound,
+        //            Status = HttpStatusCode.NotFound.ToString(),
+        //            Message = "data not found"
+        //        });
+        //    }
+
+        //    return Ok(new ResponseHandler<IEnumerable<AccountDto>>
+        //    {
+        //        Code = StatusCodes.Status200OK,
+        //        Status = HttpStatusCode.OK.ToString(),
+        //        Message = "Success hashed all password"
+        //    });
+        //}
     }
+
+
 }

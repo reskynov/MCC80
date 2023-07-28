@@ -148,7 +148,7 @@ public class UniversityController : ControllerBase
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
-            Message = "Success retrieve data"
+            Message = "Success delete data"
         });
     }
 }

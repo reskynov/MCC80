@@ -6,6 +6,7 @@ using API.DTOs.Employees;
 using API.DTOs.Universities;
 using API.Models;
 using API.Utilities.Handlers;
+using System.Linq.Expressions;
 using System.Xml.Linq;
 
 namespace API.Services
@@ -57,7 +58,9 @@ namespace API.Services
 
         public AccountDto? Create(NewAccountDto newAccountDto)
         {
-            var accountDto = _accountRepository.Create(newAccountDto);
+            var accountToCreate = newAccountDto;
+            accountToCreate.Password = HashingHandler.GenerateHash(newAccountDto.Password);
+            var accountDto = _accountRepository.Create(accountToCreate);
             if (accountDto is null)
             {
                 return null;
@@ -76,6 +79,7 @@ namespace API.Services
 
             Account toUpdate = accountDto;
             toUpdate.CreatedDate = account.CreatedDate;
+            toUpdate.Password = HashingHandler.GenerateHash(accountDto.Password);
             var result = _accountRepository.Update(toUpdate);
 
             return result ? 1 // account is updated;
@@ -114,14 +118,13 @@ namespace API.Services
                     universityToCreate.Name = registerDto.UniversityName;
                     universityToCreate.CreatedDate = DateTime.Now;
                     universityToCreate.ModifiedDate = DateTime.Now;
+                    //University Create
+                    var universityResult = _universityRepository.Create(universityToCreate);
                 }
                 else
                 {
                     universityToCreate = existingUniversity;
                 }
-                //University Create
-                var universityResult = _universityRepository.Create(universityToCreate);
-
                 //Employee Create
                 Employee employeeToCreate = new NewEmployeeDto
                 {
@@ -143,7 +146,7 @@ namespace API.Services
                     Degree = registerDto.Degree,
                     Major = registerDto.Major,
                     GPA = registerDto.GPA,
-                    UniversityGuid = universityResult.Guid
+                    UniversityGuid = universityToCreate.Guid
                 });
 
                 //Account Create
@@ -153,7 +156,7 @@ namespace API.Services
                     IsUsed = true,
                     ExpiredTime = DateTime.Now.AddYears(3),
                     OTP = 111,
-                    Password = registerDto.Password,
+                    Password = HashingHandler.GenerateHash(registerDto.Password)
                 });
 
                 transaction.Commit();
@@ -169,21 +172,29 @@ namespace API.Services
 
         public int Login(LoginDto loginDto)
         {
-            var getEmployee = _employeeRepository.GetByEmail(loginDto.Email);
-
-            if (getEmployee is null)
+            try
             {
-                return 0; // Employee not found
+                var getEmployee = _employeeRepository.GetByEmail(loginDto.Email);
+
+                if (getEmployee is null)
+                {
+                    return 0; // Employee not found
+                }
+
+                var getAccount = _accountRepository.GetByGuid(getEmployee.Guid);
+
+                if (HashingHandler.ValidateHash(loginDto.Password, getAccount.Password))
+                {
+                    return 1; // Login success
+                }
+
+                return 0;
             }
-
-            var getAccount = _accountRepository.GetByGuid(getEmployee.Guid);
-
-            if (getAccount.Password == loginDto.Password)
+            
+            catch
             {
-                return 1; // Login success
+                return 0;
             }
-
-            return 0;
         }
 
         public int ForgotPassword(ForgotPasswordDto forgotPasswordDto)
@@ -212,7 +223,7 @@ namespace API.Services
                 ModifiedDate = getAccountDetail.ModifiedDate
             });
 
-            if(!isUpdated)
+            if (!isUpdated)
             {
                 return -1; // error update
             }
@@ -223,9 +234,9 @@ namespace API.Services
         public int ChangePassword(ChangePasswordDto changePasswordDto)
         {
             var getAccount = (from e in _employeeRepository.GetAll()
-                                    join a in _accountRepository.GetAll() on e.Guid equals a.Guid
-                                    where e.Email == changePasswordDto.Email
-                                    select a).FirstOrDefault();
+                              join a in _accountRepository.GetAll() on e.Guid equals a.Guid
+                              where e.Email == changePasswordDto.Email
+                              select a).FirstOrDefault();
 
             if (getAccount is null)
             {
@@ -240,10 +251,10 @@ namespace API.Services
                 CreatedDate = getAccount.CreatedDate,
                 OTP = getAccount.OTP,
                 ExpiredDate = getAccount.ExpiredDate,
-                Password = changePasswordDto.Password,
+                Password = HashingHandler.GenerateHash(changePasswordDto.Password),
             };
 
-            if(getAccount.OTP != changePasswordDto.OTP)
+            if (getAccount.OTP != changePasswordDto.OTP)
             {
                 return -1;
             }
@@ -267,7 +278,28 @@ namespace API.Services
             }
 
             return 3;
-
         }
+
+        //public int HashAllPassword()
+        //{
+        //    using var transaction = _dbContext.Database.BeginTransaction();
+        //    try
+        //    {
+        //        var accounts = _accountRepository.GetAll();
+        //        foreach (var account in accounts)
+        //        {
+        //            var accountToChange = account;
+        //            accountToChange.Password = HashingHandler.GenerateHash(account.Password);
+        //            var update = _accountRepository.Update(accountToChange);
+        //        }
+        //        transaction.Commit();
+        //    }
+        //    catch
+        //    {
+        //        transaction.Rollback();
+        //        return -1;
+        //    }
+        //    return 1;
+        //}
     }
 }
