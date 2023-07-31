@@ -159,7 +159,7 @@ namespace API.Controllers
         {
             var result = _accountService.Login(loginDto);
 
-            if (result is 0)
+            if (result is "0")
             {
                 return NotFound(new ResponseHandler<LoginDto>
                 {
@@ -169,11 +169,25 @@ namespace API.Controllers
                 });
             }
 
-            return Ok(new ResponseHandler<LoginDto>
+            if (result is "-2")
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandler<AccountDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "Error occurred when registering"
+                });
+            }
+
+            return Ok(new ResponseHandler<TokenDto>
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
-                Message = "Login Success"
+                Message = "Login Success",
+                Data = new TokenDto
+                {
+                    Token = result
+                }
             });
         }
 

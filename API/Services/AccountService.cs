@@ -7,6 +7,7 @@ using API.DTOs.Universities;
 using API.Models;
 using API.Utilities.Handlers;
 using System.Linq.Expressions;
+using System.Security.Claims;
 using System.Xml.Linq;
 
 namespace API.Services
@@ -19,13 +20,15 @@ namespace API.Services
         private readonly IUniversityRepository _universityRepository;
         private readonly BookingDbContext _dbContext;
         private readonly IEmailHandler _emailHandler;
+        private readonly ITokenHandler _tokenHandler;
 
         public AccountService(IAccountRepository accountRepository, 
             IEmployeeRepository employeeRepository, 
             IUniversityRepository universityRepository, 
             IEducationRepository educationRepository, 
             BookingDbContext bookingDbContext,
-            IEmailHandler emailHandler)
+            IEmailHandler emailHandler,
+            ITokenHandler tokenHandler)
         {
             _accountRepository = accountRepository;
             _employeeRepository = employeeRepository;
@@ -33,6 +36,7 @@ namespace API.Services
             _educationRepository = educationRepository;
             _dbContext = bookingDbContext;
             _emailHandler = emailHandler;
+            _tokenHandler = tokenHandler;
         }
 
         public IEnumerable<AccountDto> GetAll()
@@ -177,7 +181,7 @@ namespace API.Services
             return (RegisterDto)registerDto;
         }
 
-        public int Login(LoginDto loginDto)
+        public string Login(LoginDto loginDto)
         {
             try
             {
@@ -185,22 +189,35 @@ namespace API.Services
 
                 if (getEmployee is null)
                 {
-                    return 0; // Employee not found
+                    return "0"; // Employee not found
                 }
 
                 var getAccount = _accountRepository.GetByGuid(getEmployee.Guid);
 
                 if (!HashingHandler.ValidateHash(loginDto.Password, getAccount.Password))
                 {
-                    return 0; // Login success
+                    return "0"; // Login not success
                 }
 
-                return 1;
+                var claims = new List<Claim>
+                {
+                    new Claim("Guid", getAccount.Guid.ToString()),
+                    new Claim("FullName", $"{getEmployee.FirstName} {getEmployee.LastName}"),
+                    new Claim("Email", getEmployee.Email)
+                };
+
+                var generatedToken = _tokenHandler.GenerateToken(claims);
+                if(generatedToken is null)
+                {
+                    return "-2";
+                }
+
+                return generatedToken;
             }
             
             catch
             {
-                return 0;
+                return "0";
             }
         }
 

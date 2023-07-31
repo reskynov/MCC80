@@ -160,13 +160,13 @@ namespace API.Controllers
         public IActionResult GetBookedRoomToday()
         {
             var result = _roomService.GetAllBookedRoomToday();
-            if (result is null)
+            if (!result.Any())
             {
                 return NotFound(new ResponseHandler<BookedRoomTodayDto>
                 {
                     Code = StatusCodes.Status404NotFound,
                     Status = HttpStatusCode.NotFound.ToString(),
-                    Message = "guid not found"
+                    Message = "No data found"
                 });
             }
 

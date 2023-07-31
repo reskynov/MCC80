@@ -46,6 +46,9 @@ builder.Services.AddTransient<IEmailHandler, EmailHandler>(_ => new EmailHandler
 //Register FluentValidation
 builder.Services.AddFluentValidationAutoValidation().AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
+//Register TokenHandler
+builder.Services.AddScoped<ITokenHandler, TokenHandler>();
+
 //Add controller
 builder.Services.AddControllers()
                 .ConfigureApiBehaviorOptions(options =>
