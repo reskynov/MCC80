@@ -4,6 +4,7 @@ using API.DTOs.Rooms;
 using API.Models;
 using API.Services;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -12,6 +13,7 @@ namespace API.Controllers
 
     [ApiController]
     [Route("api/rooms")]
+    [Authorize]
     public class RoomController : Controller
     {
         private readonly RoomService _roomService;
@@ -157,6 +159,7 @@ namespace API.Controllers
         }
 
         [HttpGet("booked-today")]
+        [AllowAnonymous]
         public IActionResult GetBookedRoomToday()
         {
             var result = _roomService.GetAllBookedRoomToday();

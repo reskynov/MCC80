@@ -5,11 +5,13 @@ using API.DTOs.Accounts;
 using API.DTOs.Universities;
 using API.Utilities.Handlers;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
     [ApiController]
     [Route("api/accounts")]
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly AccountService _accountService;
@@ -155,6 +157,7 @@ namespace API.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public IActionResult Login(LoginDto loginDto)
         {
             var result = _accountService.Login(loginDto);
@@ -192,6 +195,7 @@ namespace API.Controllers
         }
 
         [HttpPost("register")]
+        [AllowAnonymous]
         public IActionResult Register(RegisterDto registerDto)
         {
             var result = _accountService.Register(registerDto);
@@ -215,6 +219,7 @@ namespace API.Controllers
         }
 
         [HttpPost("forgot-password")]
+        [AllowAnonymous]
         public IActionResult ForgotPassword(ForgotPasswordDto forgotPasswordDto)
         {
             var isUpdated = _accountService.ForgotPassword(forgotPasswordDto);
@@ -247,6 +252,7 @@ namespace API.Controllers
         }
 
         [HttpPost("change-password")]
+        [AllowAnonymous]
         public IActionResult ChangePassword(ChangePasswordDto changePasswordDto)
         {
             var update = _accountService.ChangePassword(changePasswordDto);

@@ -1,6 +1,7 @@
 ﻿using API.DTOs.Universities;
 using API.Services;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,6 +9,7 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("api/univerities")]
+[Authorize(Roles = "Employee")]
 public class UniversityController : ControllerBase
 {
     private readonly UniversityService _universityService;

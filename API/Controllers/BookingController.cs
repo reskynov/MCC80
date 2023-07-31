@@ -7,11 +7,13 @@ using API.DTOs.AccountRoles;
 using API.Utilities.Handlers;
 using System.Net;
 using API.DTOs.Rooms;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
     [ApiController]
     [Route("api/bookings")]
+    [Authorize]
     public class BookingController : Controller
     {
         private readonly BookingService _bookingService;
@@ -157,6 +159,7 @@ namespace API.Controllers
         }
 
         [HttpGet("detail")]
+        [AllowAnonymous]
         public IActionResult GetAllDetailBooking()
         {
             var result = _bookingService.GetAllDetailBooking();
@@ -180,6 +183,7 @@ namespace API.Controllers
         }
 
         [HttpGet("detail/{guid}")]
+        [AllowAnonymous]
         public IActionResult GetAllDetailBooking(Guid guid)
         {
             var result = _bookingService.GetDetailBookingByGuid(guid);
@@ -203,6 +207,7 @@ namespace API.Controllers
         }
 
         [HttpGet("free-rooms-today")]
+        [AllowAnonymous]
         public IActionResult FreeRoomsToday()
         {
             var result = _bookingService.GetFreeRoomsToday();
@@ -226,6 +231,7 @@ namespace API.Controllers
         }
 
         [HttpGet("booked-time-length")]
+        [AllowAnonymous]
         public IActionResult BookingLength()
         {
             var result = _bookingService.BookingLength();

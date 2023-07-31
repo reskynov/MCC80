@@ -4,6 +4,7 @@ using API.DTOs.Educations;
 using API.Models;
 using API.Services;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -11,6 +12,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/educations")]
+    [Authorize(Roles = "Employee")]
     public class EducationController : Controller
     {
         private readonly EducationService _educationService;

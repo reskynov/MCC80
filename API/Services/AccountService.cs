@@ -1,13 +1,16 @@
 ﻿using API.Contracts;
 using API.Data;
+using API.DTOs.AccountRoles;
 using API.DTOs.Accounts;
 using API.DTOs.Educations;
 using API.DTOs.Employees;
 using API.DTOs.Universities;
 using API.Models;
+using API.Repositories;
 using API.Utilities.Handlers;
 using System.Linq.Expressions;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Xml.Linq;
 
 namespace API.Services
@@ -15,6 +18,7 @@ namespace API.Services
     public class AccountService
     {
         private readonly IAccountRepository _accountRepository;
+        private readonly IAccountRoleRepository _accountRoleRepository;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IEducationRepository _educationRepository;
         private readonly IUniversityRepository _universityRepository;
@@ -23,6 +27,7 @@ namespace API.Services
         private readonly ITokenHandler _tokenHandler;
 
         public AccountService(IAccountRepository accountRepository, 
+            IAccountRoleRepository accountRoleRepository,
             IEmployeeRepository employeeRepository, 
             IUniversityRepository universityRepository, 
             IEducationRepository educationRepository, 
@@ -31,6 +36,7 @@ namespace API.Services
             ITokenHandler tokenHandler)
         {
             _accountRepository = accountRepository;
+            _accountRoleRepository = accountRoleRepository;
             _employeeRepository = employeeRepository;
             _universityRepository = universityRepository;
             _educationRepository = educationRepository;
@@ -170,6 +176,13 @@ namespace API.Services
                     Password = HashingHandler.GenerateHash(registerDto.Password)
                 });
 
+                //AccountRole Create, Otomatis buat menjadi role employee
+                var accountRole = _accountRoleRepository.Create(new NewAccountRoleDto
+                {
+                    AccountGuid = accountResult.Guid,
+                    RoleGuid = Guid.Parse("5eeda544-ee8f-495d-9366-6c04e0904a5c")
+                });
+
                 transaction.Commit();
             }
             catch
@@ -199,12 +212,21 @@ namespace API.Services
                     return "0"; // Login not success
                 }
 
+                var getRoles = _accountRoleRepository.GetRoleNamesByAccountGuid(getEmployee.Guid);
+
+                //Claims atau payload berupa isi data yang disimpan token
                 var claims = new List<Claim>
                 {
                     new Claim("Guid", getAccount.Guid.ToString()),
                     new Claim("FullName", $"{getEmployee.FirstName} {getEmployee.LastName}"),
                     new Claim("Email", getEmployee.Email)
                 };
+
+                //role untuk mengecek hak akses dari employee
+                foreach (var role in getRoles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+                }
 
                 var generatedToken = _tokenHandler.GenerateToken(claims);
                 if(generatedToken is null)

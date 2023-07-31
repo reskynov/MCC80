@@ -4,6 +4,7 @@ using API.DTOs.Roles;
 using API.Models;
 using API.Services;
 using API.Utilities.Handlers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -11,6 +12,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/roles")]
+    [Authorize(Roles = "Admin")]
     public class RoleController : Controller
     {
         private readonly RoleService _roleService;
