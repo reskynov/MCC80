@@ -18,14 +18,21 @@ namespace API.Services
         private readonly IEducationRepository _educationRepository;
         private readonly IUniversityRepository _universityRepository;
         private readonly BookingDbContext _dbContext;
+        private readonly IEmailHandler _emailHandler;
 
-        public AccountService(IAccountRepository accountRepository, IEmployeeRepository employeeRepository, IUniversityRepository universityRepository, IEducationRepository educationRepository, BookingDbContext bookingDbContext)
+        public AccountService(IAccountRepository accountRepository, 
+            IEmployeeRepository employeeRepository, 
+            IUniversityRepository universityRepository, 
+            IEducationRepository educationRepository, 
+            BookingDbContext bookingDbContext,
+            IEmailHandler emailHandler)
         {
             _accountRepository = accountRepository;
             _employeeRepository = employeeRepository;
             _universityRepository = universityRepository;
             _educationRepository = educationRepository;
             _dbContext = bookingDbContext;
+            _emailHandler = emailHandler;
         }
 
         public IEnumerable<AccountDto> GetAll()
@@ -154,7 +161,7 @@ namespace API.Services
                 {
                     Guid = employeeToCreate.Guid,
                     IsUsed = true,
-                    ExpiredTime = DateTime.Now.AddYears(3),
+                    ExpiredTime = DateTime.Now.AddMinutes(5),
                     OTP = 111,
                     Password = HashingHandler.GenerateHash(registerDto.Password)
                 });
@@ -183,12 +190,12 @@ namespace API.Services
 
                 var getAccount = _accountRepository.GetByGuid(getEmployee.Guid);
 
-                if (HashingHandler.ValidateHash(loginDto.Password, getAccount.Password))
+                if (!HashingHandler.ValidateHash(loginDto.Password, getAccount.Password))
                 {
-                    return 1; // Login success
+                    return 0; // Login success
                 }
 
-                return 0;
+                return 1;
             }
             
             catch
@@ -227,6 +234,14 @@ namespace API.Services
             {
                 return -1; // error update
             }
+
+            //sending email to user mail
+            _emailHandler.SendEmail(new EmailMessageDto
+            {
+                ToEmail = forgotPasswordDto.Email,
+                Subject = "Forgot Password",
+                Message = $"Your OTP is {otp}"
+            });
 
             return 1;
         }

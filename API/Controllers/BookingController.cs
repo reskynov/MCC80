@@ -156,7 +156,7 @@ namespace API.Controllers
             });
         }
 
-        [HttpGet("booking-detail")]
+        [HttpGet("detail")]
         public IActionResult GetAllDetailBooking()
         {
             var result = _bookingService.GetAllDetailBooking();
@@ -179,7 +179,7 @@ namespace API.Controllers
             });
         }
 
-        [HttpGet("booking-detail/{guid}")]
+        [HttpGet("detail/{guid}")]
         public IActionResult GetAllDetailBooking(Guid guid)
         {
             var result = _bookingService.GetDetailBookingByGuid(guid);
