@@ -86,7 +86,7 @@ namespace API.Controllers
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
-                Message = "Success retrieve data",
+                Message = "Success insert data",
                 Data = result
             });
         }
@@ -119,7 +119,7 @@ namespace API.Controllers
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
-                Message = "Success retrieve data"
+                Message = "Success update data"
             });
         }
 

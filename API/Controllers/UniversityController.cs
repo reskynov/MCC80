@@ -83,7 +83,7 @@ public class UniversityController : ControllerBase
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
-            Message = "Success retrieve data",
+            Message = "Success insert data",
             Data = result
         });
     }
@@ -117,7 +117,7 @@ public class UniversityController : ControllerBase
         {
             Code = StatusCodes.Status200OK,
             Status = HttpStatusCode.OK.ToString(),
-            Message = "Success retrieve data"
+            Message = "Success update data"
         });
     }
 
