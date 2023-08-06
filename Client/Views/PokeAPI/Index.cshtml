@@ -1,0 +1,52 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="d-flex flex-column align-items-center justify-content-center">
+    <h1>~ Pokédex ~</h1>
+    <div id="pokemon" class="container"></div>
+
+</div>
+
+
+<div class="modal" id="pokemonModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex flex-row align-items-center justify-content-center">
+                <div class="d-flex flex-column align-items-center justify-content-center">
+                    <h3 class="modal-title"></h3>
+                    <div class="modal-badge"></div>
+                    <img src="" class="modal-pokemon-potrait" />
+                </div>
+                
+                <div class="pokemon-data ms-5 bg-light rounded" style="width: 40%">
+                    <table class="table-data table table-sm table-borderless">
+                        <thead>
+                        </thead>
+                        <tbody>
+                            <tr class="pokemon-height">
+                            </tr>
+                            <tr class="pokemon-weight">
+                            </tr>
+                            <tr class="pokemon-abilities">
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-stat">
+                        <thead>
+                            <tr>
+                                <th class="text-center">STATS</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tbody-stat">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
