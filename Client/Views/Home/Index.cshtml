@@ -2,7 +2,41 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1>EMPLOYEE DATA</h1>
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-chart-pie mr-1"></i>
+                Gender Count
+            </h3>
+        </div><!-- /.card-header -->
+        <div class="card-body">
+            <div class="tab-content">
+                <!-- Morris chart - Sales -->
+                <div class="chart tab-pane active" id="revenue-chart"
+                     style="position: relative; height: 300px;">
+                    <canvas id="genderChart" height="300" style="height: 300px;"></canvas>
+                </div>
+            </div>
+        </div><!-- /.card-body -->
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-chart-pie mr-1"></i>
+                All Major Name & Count
+            </h3>
+        </div><!-- /.card-header -->
+        <div class="card-body">
+            <div class="tab-content">
+                <!-- Morris chart - Sales -->
+                <div class="chart tab-pane active" id="revenue-chart"
+                     style="position: relative; height: 300px;">
+                    <canvas id="majorChart" height="300" style="height: 300px;"></canvas>
+                </div>
+            </div>
+        </div><!-- /.card-body -->
+    </div>
 </div>
+

@@ -13,7 +13,7 @@ namespace API.Controllers
 
     [ApiController]
     [Route("api/rooms")]
-    [Authorize]
+    //[Authorize]
     public class RoomController : Controller
     {
         private readonly RoomService _roomService;

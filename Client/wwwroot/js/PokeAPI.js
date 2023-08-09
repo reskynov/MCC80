@@ -110,7 +110,7 @@ $(document).ready(function () {
 
             //weight
             let pokemonWeight = `<th>Weight</th>
-                                 <td>${allPokemons[index].weight} Kg</td>`;
+                                 <td>${(allPokemons[index].weight) / 10} Kg</td>`;
             $(".pokemon-weight").html(pokemonWeight)
 
             //abilities

@@ -12,7 +12,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/educations")]
-    [Authorize(Roles = "Employee")]
+    //[Authorize(Roles = "Employee")]
     public class EducationController : Controller
     {
         private readonly EducationService _educationService;
