@@ -92,8 +92,9 @@ let table = new DataTable('#employeeTable', {
     ],
     dom: 'Blfrtip',
     buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print'
-    ],
+        'copy', 'csv', 'excel', 'pdf', 'print', 
+        { extend: 'colvis', text: 'Show/Hide columns', className: 'btn btn-primary' }
+    ]
 });
 
 //delete data

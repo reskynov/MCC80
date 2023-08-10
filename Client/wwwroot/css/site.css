@@ -104,3 +104,12 @@ table .text-center{
 .speed{
     background-color:deeppink;
 }
+
+.dt-button.buttons-columnVisibility {
+    background-color: red;
+    color: white;
+}
+
+    .dt-button.buttons-columnVisibility.active {
+        background-color: green;
+    }
