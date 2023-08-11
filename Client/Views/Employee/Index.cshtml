@@ -74,8 +74,11 @@
                             @Html.DisplayFor(modelItem => item.PhoneNumber)
                         </td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.Guid">Edit</a> |
-                            <a action="Delete" method="GET" asp-route-id="@item.Guid">Delete</a>
+                            <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Guid">Edit</a>
+                            <form action="/Employee/Delete" method="post" onsubmit="return confirm('Apakah Anda Yakin Ingin menghapus data ini?')">
+                                <input type="hidden" value="@item.Guid" name="guid" />
+                                <input type="submit" value="Delete" class="btn btn-danger" onclick="return true" />
+                            </form>
                         </td>
                     </tr>
                 }

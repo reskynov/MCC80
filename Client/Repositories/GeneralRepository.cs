@@ -2,6 +2,8 @@
 using Client.Contracts;
 using Newtonsoft.Json;
 using System.Text;
+using System.Net.Http.Headers;
+using System;
 
 namespace Client.Repositories
 {
@@ -10,22 +12,24 @@ namespace Client.Repositories
     {
         protected readonly string request;
         protected readonly HttpClient httpClient;
+        private readonly IHttpContextAccessor contextAccessor;
 
         public GeneralRepository(string request)
         {
             this.request = request;
+            contextAccessor = new HttpContextAccessor();
             httpClient = new HttpClient
             {
                 BaseAddress = new Uri("https://localhost:7123/api/")
             };
-            this.request = request;
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", contextAccessor.HttpContext?.Session.GetString("JWToken"));
         }
 
         public async Task<ResponseHandler<Entity>> Delete(TId id)
         {
             ResponseHandler<Entity> entityVM = null;
             StringContent content = new StringContent(JsonConvert.SerializeObject(id), Encoding.UTF8, "application/json");
-            using (var response = httpClient.DeleteAsync(request).Result)
+            using (var response = httpClient.DeleteAsync(request + "?guid=" + id).Result)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
                 entityVM = JsonConvert.DeserializeObject<ResponseHandler<Entity>>(apiResponse);
@@ -72,7 +76,7 @@ namespace Client.Repositories
         {
             ResponseHandler<Entity> entityVM = null;
             StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
-            using (var response = httpClient.PutAsync(request, content).Result)
+            using (var response = httpClient.PutAsync(request + id, content).Result)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
                 entityVM = JsonConvert.DeserializeObject<ResponseHandler<Entity>>(apiResponse);

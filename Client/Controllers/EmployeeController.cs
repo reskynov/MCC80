@@ -4,9 +4,11 @@ using Client.Contracts;
 using Client.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Client.Controllers;
 
+//[Authorize]
 public class EmployeeController : Controller
 {
     private readonly IEmployeeRepository repository;
@@ -35,6 +37,7 @@ public class EmployeeController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(NewEmployeeDto newEmploye)
     {
 
