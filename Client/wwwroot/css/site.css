@@ -12,15 +12,6 @@ html {
   }
 }
 
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  margin-bottom: 60px;
-}
-
 .col-poke {
     transition: transform .2s;
     background-image: url("../pokemon ball.png");
@@ -73,18 +64,6 @@ body {
     width: 90%;
 }
 
-table {
-    font-size: 15px;
-}
-
-
-table .text-center{
-    border-top: solid 1px black;
-}
-.table-data{
-    margin-bottom: 0;
-}
-
 .hp {
     background-color: rgb(76, 255, 0);
 }
@@ -104,12 +83,3 @@ table .text-center{
 .speed{
     background-color:deeppink;
 }
-
-.dt-button.buttons-columnVisibility {
-    background-color: red;
-    color: white;
-}
-
-    .dt-button.buttons-columnVisibility.active {
-        background-color: green;
-    }

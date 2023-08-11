@@ -1,6 +1,4 @@
-﻿
-using API.DTOs.Employees;
-using API.Models;
+﻿using Client.Models;
 using Client.Contracts;
 
 namespace Client.Repositories

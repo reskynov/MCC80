@@ -1,5 +1,4 @@
-﻿using API.Utilities;
-using API.Utilities.Handlers;
+﻿using Client.Utilities.Handlers;
 using Client.Contracts;
 using Newtonsoft.Json;
 using System.Text;
@@ -9,8 +8,8 @@ namespace Client.Repositories
     public class GeneralRepository<Entity, TId> : IRepository<Entity, TId>
         where Entity : class
     {
-        private readonly string request;
-        private readonly HttpClient httpClient;
+        protected readonly string request;
+        protected readonly HttpClient httpClient;
 
         public GeneralRepository(string request)
         {
@@ -22,9 +21,16 @@ namespace Client.Repositories
             this.request = request;
         }
 
-        public Task<ResponseHandler<Entity>> Delete(TId id)
+        public async Task<ResponseHandler<Entity>> Delete(TId id)
         {
-            throw new NotImplementedException();
+            ResponseHandler<Entity> entityVM = null;
+            StringContent content = new StringContent(JsonConvert.SerializeObject(id), Encoding.UTF8, "application/json");
+            using (var response = httpClient.DeleteAsync(request).Result)
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entityVM = JsonConvert.DeserializeObject<ResponseHandler<Entity>>(apiResponse);
+            }
+            return entityVM;
         }
 
         public async Task<ResponseHandler<IEnumerable<Entity>>> GetAll()
@@ -40,13 +46,14 @@ namespace Client.Repositories
 
         public async Task<ResponseHandler<Entity>> Get(TId id)
         {
-            ResponseHandler<Entity> entityVM = null;
-            using (var response = await httpClient.GetAsync(request))
+            ResponseHandler<Entity> entity = null;
+
+            using (var response = await httpClient.GetAsync(request + id))
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
-                entityVM = JsonConvert.DeserializeObject<ResponseHandler<Entity>>(apiResponse);
+                entity = JsonConvert.DeserializeObject<ResponseHandler<Entity>>(apiResponse);
             }
-            return entityVM;
+            return entity;
         }
 
         public async Task<ResponseHandler<Entity>> Post(Entity entity)

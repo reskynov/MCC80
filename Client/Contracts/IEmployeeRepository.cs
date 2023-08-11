@@ -1,6 +1,4 @@
-﻿
-
-using API.Models;
+﻿using Client.Models;
 
 namespace Client.Contracts
 {
