@@ -3,7 +3,7 @@ $(document).ready(function () {
     $('#employeeTable').DataTable({
         dom: 'Blfrtip',
         buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print', 'colvis'
+            'colvis', 'copy', 'csv', 'excel', 'pdf', 'print' 
         ]
     });
     //tambah data

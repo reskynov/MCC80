@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Client.Controllers;
 
-//[Authorize]
+[Authorize(Roles = "Admin, Manager")]
 public class EmployeeController : Controller
 {
     private readonly IEmployeeRepository repository;

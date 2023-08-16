@@ -24,8 +24,8 @@ $.ajax({
     }
 
     //genderChart
-    const ctx = $('#majorChart');
-    new Chart(ctx, {
+    const majorChart = $('#majorChart');
+    new Chart(majorChart, {
         type: 'bar',
         data: {
             labels: majorNameArr,

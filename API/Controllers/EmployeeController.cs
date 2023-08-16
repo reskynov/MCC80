@@ -13,7 +13,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/employees")]
-    [Authorize]
+    //[Authorize]
     [EnableCors]
     public class EmployeeController : Controller
     {
